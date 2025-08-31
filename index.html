@@ -3,85 +3,54 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>스텔라이브 & 이세계아이돌 팬 허브 (복구판 v9.1C)</title>
+  <title>스텔라이브 & 이세계아이돌 팬 허브 — 클래식 복원 v8R</title>
   <meta name="color-scheme" content="dark light">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;600;700;800&display=swap" rel="stylesheet">
   <script defer src="https://accounts.google.com/gsi/client"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   <style>
     :root{
-      --bg:#0e1117; --surface:#111827; --elev:#0c1220; --stroke:#253046;
-      --text:#eaeef7; --muted:#a7b1c6; --brand:#8b8fff; --brand-2:#ff7dbc;
-      --ok:#64d2b3; --warn:#ffcc66; --bad:#ff7d7d; --radius:16px;
+      --bg:#0f1220; --surface:#101428; --stroke:#26314a; --text:#e9eef8; --muted:#9fb0c9;
+      --brand:#8b8fff; --brand2:#ff7dbc; --ok:#68d6b7; --warn:#ffd37a; --bad:#ff8a8a; --r:14px;
     }
     *{box-sizing:border-box}
-    html,body{margin:0;padding:0;background:var(--bg);color:var(--text);
-      font-family: Pretendard, system-ui, -apple-system, 'Noto Sans KR', Segoe UI, Roboto, sans-serif;}
-    a{color:var(--brand);text-decoration:none}
+    html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:-apple-system,system-ui,"Noto Sans KR",Segoe UI,Roboto,Helvetica,Arial,sans-serif}
     img{max-width:100%;display:block}
-    .container{max-width:1180px;margin:0 auto;padding:0 16px}
-    header{position:sticky;top:0;z-index:20;background:linear-gradient(180deg,rgba(7,10,16,.9),rgba(7,10,16,.35),rgba(7,10,16,0));
-      border-bottom:1px solid var(--stroke);backdrop-filter:saturate(1.1) blur(10px)}
-    .nav{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 0}
-    .brand{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.2px}
-    .brand .badge{border:1px solid var(--stroke);padding:.25rem .6rem;border-radius:999px;color:var(--muted);font-size:.85rem;background:#0b1322}
+    a{color:var(--brand);text-decoration:none}
+    .container{max-width:1100px;margin:0 auto;padding:0 14px}
+    header{position:sticky;top:0;background:#0b0f1dba;border-bottom:1px solid var(--stroke);backdrop-filter:blur(8px);z-index:10}
+    .nav{display:flex;gap:10px;align-items:center;justify-content:space-between;padding:10px 0}
+    .brand{font-weight:800;letter-spacing:.2px}
     .tabs{display:flex;gap:6px;flex-wrap:wrap}
-    .tabs button{border:1px solid var(--stroke);background:#0c1425;color:var(--text);
-      padding:.5rem .8rem;border-radius:12px;cursor:pointer}
-    .tabs button.active{background:var(--brand);color:#101218;border-color:transparent}
+    .tabs button{border:1px solid var(--stroke);background:#0c1325;color:var(--text);padding:.5rem .7rem;border-radius:10px;cursor:pointer}
+    .tabs button.active{background:var(--brand);color:#0c1120;border-color:transparent}
     .right{display:flex;gap:8px;align-items:center}
-    .btn{border:1px solid var(--stroke);background:#0c1425;color:var(--text);padding:.5rem .7rem;border-radius:10px;cursor:pointer}
-    .btn.primary{background:var(--brand);border-color:transparent;color:#111}
-    .btn.ghost{background:transparent}
     .pill{display:inline-block;border:1px solid var(--stroke);border-radius:999px;padding:.25rem .6rem;color:var(--muted);background:#0b1322}
+    .btn{border:1px solid var(--stroke);background:#0c1425;color:var(--text);padding:.45rem .7rem;border-radius:10px;cursor:pointer}
+    .btn.primary{background:var(--brand);border-color:transparent;color:#101218}
+    .btn.ghost{background:transparent}
+    main{display:grid;gap:12px}
+    section{border:1px solid var(--stroke);border-radius:var(--r);padding:12px;background:linear-gradient(180deg,#0e1529 0%,#0a1020 100%)}
+    h1,h2{margin:.2rem 0 .6rem}
+    h1{font-size:1.4rem} h2{font-size:1.2rem}
     .muted{color:var(--muted)}
-    main{display:grid;gap:14px}
-    section{border:1px solid var(--stroke);border-radius:var(--radius);padding:14px;background:linear-gradient(180deg,#101626,rgba(255,255,255,.03))}
-    h1,h2,h3{margin:.2rem 0 .6rem 0}
-    h1{font-size:1.6rem}
-    h2{font-size:1.25rem}
-    .hide{display:none}
-
-    /* HERO (현재 버전에서 마음에 들었던 메인 화면 스타일 유지) */
-    .hero{display:grid;grid-template-columns:1.2fr .8fr;gap:12px;align-items:center}
-    .hero .panel{border:1px solid var(--stroke);border-radius:14px;background:#0c1424;padding:12px}
-    .hero .cta{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
-    @media(max-width:920px){.hero{grid-template-columns:1fr}}
-
-    /* grids */
     .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px}
     .card{border:1px solid var(--stroke);border-radius:12px;background:#0c1424;padding:10px}
     .row{display:flex;align-items:center;justify-content:space-between;gap:8px}
     .controls{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 10px}
     input,select,textarea{border:1px solid var(--stroke);background:#0c1425;color:var(--text);padding:.5rem .6rem;border-radius:10px;width:100%}
     textarea{min-height:84px;resize:vertical}
-    .tool{display:flex;gap:8px;flex-wrap:wrap}
-    .kbar{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
-
-    /* list */
     .list{display:grid;gap:6px}
     .list li{display:flex;align-items:center;justify-content:space-between;gap:8px;border:1px solid var(--stroke);background:#0c1424;padding:8px;border-radius:10px}
-
-    /* gallery */
     .gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
     .gallery figure{border:1px solid var(--stroke);border-radius:12px;background:#0c1424;padding:10px}
-    .gallery img{border-radius:10px}
-
-    /* chart wrap */
-    .chart-wrap{border:1px solid var(--stroke);border-radius:12px;background:#0c1424;padding:10px}
-
-    footer{padding:30px 0;color:var(--muted);text-align:center}
+    .hide{display:none}
+    footer{padding:28px 0;text-align:center;color:var(--muted)}
   </style>
 </head>
 <body>
   <header>
     <div class="container nav">
-      <div class="brand">
-        <span>팬 허브</span>
-        <span class="badge">STELLIVE & ISEGYE</span>
-      </div>
-
+      <div class="brand">팬 허브 <span class="pill">클래식 v8R</span></div>
       <nav class="tabs">
         <button data-tab="home" class="active">홈</button>
         <button data-tab="members">멤버</button>
@@ -92,9 +61,7 @@
         <button data-tab="confess">익명 고백함</button>
         <button data-tab="vote">투표</button>
       </nav>
-
       <div class="right">
-        <button id="themeBtn" class="btn">🌗</button>
         <span id="userBadge" class="pill">로그아웃 상태</span>
         <div id="signinBtn" class="btn primary">Google 로그인</div>
         <button id="adminBtn" class="btn hide">⚙️ 설정</button>
@@ -103,32 +70,18 @@
   </header>
 
   <main class="container">
-    <!-- HOME (현재 메인 유지) -->
-    <section id="home" class="hero">
-      <div>
-        <span class="pill">복원판 v9.1C</span>
-        <h1>스텔라이브 & 이세계아이돌 — 팬 허브</h1>
-        <p class="muted">이전 버전 기능을 되살리고, 현재 마음에 드는 메인(히어로) 디자인만 유지한 하이브리드입니다.</p>
-        <div class="cta">
-          <button class="btn primary" onclick="switchTab('members')">멤버 보기</button>
-          <button class="btn" onclick="switchTab('favorites')">최애 모아보기</button>
-          <button class="btn" onclick="switchTab('fanart')">팬아트</button>
-          <button class="btn" onclick="switchTab('cover')">커버곡</button>
-          <button class="btn" onclick="switchTab('vote')">투표</button>
-        </div>
-      </div>
-      <div class="panel">
-        <h2>알림 & 사용법</h2>
-        <ul class="muted">
-          <li>Google 로그인 시 관리자라면 팬아트 고정/업로드/트윗 추가 가능</li>
-          <li>최애는 여러 명 지정 → ‘최애’ 탭에서 한 번에 보기</li>
-          <li>투표는 월 1표(브라우저 기준)</li>
-          <li>팬아트 이미지는 X 프록시가 없으면 타임라인 폴백</li>
-        </ul>
+    <section id="home">
+      <h1>스텔라이브 & 이세계아이돌 팬 허브</h1>
+      <p class="muted">예전 레이아웃 그대로 복원했습니다. Google 로그인/최애(여러 명)/팬아트/커버곡/일기/고백함/월간 투표가 포함되어 있습니다.</p>
+      <div class="controls">
+        <button class="btn primary" onclick="switchTab('members')">멤버 보기</button>
+        <button class="btn" onclick="switchTab('favorites')">최애 모아보기</button>
+        <button class="btn" onclick="switchTab('fanart')">팬아트 갤러리</button>
+        <button class="btn" onclick="switchTab('cover')">커버곡</button>
+        <button class="btn" onclick="switchTab('vote')">투표</button>
       </div>
     </section>
 
-    <!-- MEMBERS -->
     <section id="members" class="hide">
       <h2>멤버 소개</h2>
       <div class="controls">
@@ -138,23 +91,17 @@
           <option value="ISEGYE">이세계아이돌</option>
         </select>
         <input id="search" placeholder="이름/태그 검색"/>
-        <div class="kbar">
-          <label class="pill"><input type="checkbox" id="onlyFav"> 최애만</label>
-          <button class="btn" onclick="location.hash='#fanart'">팬아트</button>
-          <button class="btn" onclick="location.hash='#cover'">커버곡</button>
-        </div>
+        <label class="pill"><input type="checkbox" id="onlyFav"> 최애만</label>
       </div>
       <div id="memberGrid" class="grid"></div>
     </section>
 
-    <!-- FAVORITES -->
     <section id="favorites" class="hide">
-      <h2>최애(여러 명) — 한 곳에서</h2>
+      <h2>최애(여러 명)</h2>
       <div id="favWrap" class="grid"></div>
       <p class="muted">카드의 하트를 눌러 최애를 추가/삭제할 수 있어요.</p>
     </section>
 
-    <!-- FANART -->
     <section id="fanart" class="hide">
       <h2>팬아트 갤러리</h2>
       <div class="controls">
@@ -186,19 +133,15 @@
         </div>
       </div>
       <div id="fanGallery" class="gallery"></div>
-      <p class="muted">※ 프록시 미설정 시, 이미지 3장 랜덤 전시 대신 해당 태그의 타임라인으로 이동 링크를 제공합니다.</p>
+      <p class="muted">프록시가 없으면 해시태그 타임라인 링크를 보여줍니다.</p>
     </section>
 
-    <!-- COVER -->
     <section id="cover" class="hide">
       <h2>커버곡 재생목록</h2>
-      <div class="controls">
-        <select id="coverSel"></select>
-      </div>
+      <div class="controls"><select id="coverSel"></select></div>
       <div id="coverWrap" class="card"></div>
     </section>
 
-    <!-- DIARY -->
     <section id="diary" class="hide">
       <h2>덕질 일기</h2>
       <div class="controls">
@@ -208,7 +151,6 @@
       <ul id="diaryList" class="list"></ul>
     </section>
 
-    <!-- CONFESS -->
     <section id="confess" class="hide">
       <h2>익명 고백함</h2>
       <div class="controls">
@@ -218,7 +160,6 @@
       <ul id="confList" class="list"></ul>
     </section>
 
-    <!-- VOTE -->
     <section id="vote" class="hide">
       <h2>월간 투표</h2>
       <div class="controls">
@@ -231,83 +172,63 @@
         <button class="btn primary" id="doVote">투표</button>
         <button class="btn" id="myVote">내 투표 확인</button>
       </div>
-      <div class="chart-wrap">
-        <canvas id="voteChart" height="220"></canvas>
-      </div>
-      <p class="muted">※ 1인 1표/월(브라우저 기준).</p>
+      <canvas id="voteChart" height="220"></canvas>
+      <p class="muted">1인 1표/월(브라우저 기준)</p>
     </section>
   </main>
 
-  <footer class="container">
-    <p>© Fan-made hub. 이미지/영상은 각 저작권자에게 귀속됩니다.</p>
-  </footer>
+  <footer class="container"><p>© Fan-made hub. 이미지/영상은 각 저작권자에게 귀속됩니다.</p></footer>
 
   <script>
-    /* ---------- UTIL ---------- */
+    /* ===== UTIL & TABS ===== */
     const $$ = (s)=>Array.from(document.querySelectorAll(s));
     const $ = (s)=>document.querySelector(s);
     function switchTab(id){
       $$('.tabs button').forEach(b=>b.classList.toggle('active', b.dataset.tab===id));
       $$('main > section').forEach(sec=>sec.classList.toggle('hide', sec.id!==id));
-      location.hash = '#'+id;
+      location.hash='#'+id;
       if(id==='members') renderMembers();
       if(id==='favorites') renderFav();
       if(id==='fanart') renderFanartUI();
-      if(id==='cover') { populateCoverSel(); renderCover(); }
-      if(id==='vote') { populateVoteSel(); renderVoteChart(); }
+      if(id==='cover'){ populateCoverSel(); renderCover(); }
+      if(id==='vote'){ populateVoteSel(); renderVoteChart(); }
       if(id==='diary') renderDiary();
       if(id==='confess') renderConf();
     }
     $$('.tabs button').forEach(btn=>btn.addEventListener('click',()=>switchTab(btn.dataset.tab)));
-    window.addEventListener('hashchange', ()=>{
-      const id = (location.hash||'#home').slice(1);
-      const valid = ['home','members','favorites','fanart','cover','diary','confess','vote'];
-      switchTab(valid.includes(id)?id:'home');
-    });
+    window.addEventListener('hashchange', ()=>switchTab((location.hash||'#home').slice(1)));
 
-    /* ---------- THEME ---------- */
-    $('#themeBtn').addEventListener('click', ()=>{
-      document.documentElement.classList.toggle('light');
-    });
-
-    /* ---------- CONFIG LOADER ---------- */
+    /* ===== CONFIG LOADER ===== */
     let APP = { googleClientId:'', adminEmails:[], xProxyBase:'' };
     async function loadConfig(){
       try{
-        const base = new URL('.', location.href).pathname.replace(/\/[^\/]*$/, '/');
-        const cfgUrl = (base.endsWith('/')?base:base+'/') + 'config/app-config.json';
-        const res = await fetch(cfgUrl, {cache:'no-cache'});
+        const res = await fetch('config/app-config.json', {cache:'no-cache'});
         if(!res.ok) throw new Error('config load fail');
         APP = await res.json();
-      }catch(e){
-        console.warn('Config load failed', e);
-      }finally{
-        setupGoogle();
-        checkAdmin();
-      }
+      }catch(e){ console.warn('Config load failed', e); }
+      finally{ setupGoogle(); checkAdmin(); }
     }
 
-    /* ---------- GOOGLE SIGN-IN (GIS) ---------- */
+    /* ===== GOOGLE SIGN-IN (GIS) ===== */
     let USER = null;
     function setupGoogle(){
       const cid = APP.googleClientId;
-      if(!cid){ $('#signinBtn').textContent='로그인 불가(설정 필요)'; return; }
+      if(!cid){ $('#signinBtn').textContent='로그인 설정 필요'; return; }
       window.google?.accounts.id.initialize({
         client_id: cid,
         auto_select: false,
-        callback: (resp)=>{
-          // decode payload (without server verify; for client-only demo)
-          try{
-            const payload = JSON.parse(atob(resp.credential.split('.')[1]));
-            USER = { email: (payload.email||'').toLowerCase(), name: payload.name, picture: payload.picture };
-          }catch(e){ USER = { email:'', name:'', picture:'' }; }
-          $('#userBadge').textContent = USER?.email || '로그인됨';
-          $('#signinBtn').classList.add('hide');
-          checkAdmin();
-        }
+        callback: onGoogleCredential
       });
       window.google?.accounts.id.renderButton($('#signinBtn'), { theme:'outline', size:'medium' });
-      $('#signinBtn').classList.remove('hide');
+    }
+    function onGoogleCredential(resp){
+      try{
+        const payload = JSON.parse(atob(resp.credential.split('.')[1]));
+        USER = { email: (payload.email||'').toLowerCase(), name: payload.name, picture: payload.picture };
+        $('#userBadge').textContent = USER.email || '로그인됨';
+        $('#signinBtn').classList.add('hide');
+        checkAdmin();
+      }catch(e){ alert('로그인 해석 실패'); }
     }
     function checkAdmin(){
       const isAdmin = USER && APP.adminEmails.map(e=>e.toLowerCase()).includes(USER.email||'');
@@ -319,9 +240,8 @@
       $('#adminPanel').classList.toggle('hide');
     });
 
-    /* ---------- DATA ---------- */
+    /* ===== DATA ===== */
     const MEMBERS = [
-      // STELLIVE
       {id:'airi',     name:'아이리 칸나', group:'STELLIVE', stream:'https://www.youtube.com/@hebich/streams', tags:['Kanart']},
       {id:'ayatsuno', name:'아야츠노 유니', group:'STELLIVE', stream:'https://chzzk.naver.com/45e71a76e949e16a34764deb962f9d9f', tags:['yunyart']},
       {id:'shirayuki',name:'시라유키 히나', group:'STELLIVE', stream:'https://chzzk.naver.com/b044e3a3b9259246bc92e863e7d3f3b8', tags:['_hinart','shiroart']},
@@ -332,7 +252,6 @@
       {id:'aokumo',   name:'아오쿠모 린', group:'STELLIVE', stream:'https://chzzk.naver.com/516937b5f85cbf2249ce31b0ad046b0f', tags:['kumorinart']},
       {id:'hanako',   name:'하나코 나나', group:'STELLIVE', stream:'https://chzzk.naver.com/4d812b586ff63f8a2946e64fa860bbf5', tags:['Nanart_']},
       {id:'yuzuha',   name:'유즈하 리코', group:'STELLIVE', stream:'https://chzzk.naver.com/8fd39bb8de623317de90654718638b10', tags:['riko_art']},
-      // ISEGYE
       {id:'jingburger',name:'징버거', group:'ISEGYE', stream:'https://ch.sooplive.co.kr/jingburger1', tags:['징버거']},
       {id:'aine',     name:'아이네', group:'ISEGYE', stream:'https://ch.sooplive.co.kr/inehine', tags:['아이네']},
       {id:'lilpa',    name:'릴파', group:'ISEGYE', stream:'https://ch.sooplive.co.kr/lilpa0309', tags:['릴파']},
@@ -341,7 +260,6 @@
       {id:'gosegu',   name:'고세구', group:'ISEGYE', stream:'https://ch.sooplive.co.kr/gosegu2', tags:['고세구']},
     ];
     const PLAYLISTS = [
-      // ST
       {member:'yuzuha',   label:'리코',   list:'PL_D2YrKeYY2UvRIw_SW3lQXzBDO7aBeii'},
       {member:'tenko',    label:'부키',   list:'PLKVNBOcsLJlVii-8YwoZTD3o4gh5CnIND'},
       {member:'hanako',   label:'나나',   list:'PLJWmDIpvwe7Cri29xtAyQXLC1RLwOChpA'},
@@ -352,7 +270,6 @@
       {member:'arahashi', label:'타비',   list:'PLbIDsfX2JRA0oawGN209gpd_nz9IMvUlb'},
       {member:'neneko',   label:'마시로', list:'PLWwhuXFHGLvhgZZb5_rmQEMI1B0ysKJxG'},
       {member:'aokumo',   label:'린',     list:'PLSDRWR15h-o4uWNeoLv0upOUUGj12f-yU'},
-      // IS
       {member:'gosegu',   label:'고세구', list:'PLZNwpHxpI4EjDSv3v_HY7udxDEqj4C7PL'},
       {member:'jururu',   label:'주르르', list:'PLqE7uvTHaH31Wl8lCe3SYslZvoCnTD-JS'},
       {member:'viichan',  label:'비챤',   list:'PLhaJuLneKo5FdYnMZ1Jc5BaV7y26KvmD1'},
@@ -365,42 +282,34 @@
       ISEGYE:['고세구','릴파','비챤','아이네','주르르','징버거']
     };
 
-    /* ---------- STATE ---------- */
+    /* ===== STATE ===== */
     const KEY = {
-      fav: 'fh.favorites.v1',
-      diary: 'fh.diary.v1',
-      confess: 'fh.confess.v1',
-      vote: (ym)=>`fh.vote.${ym}`,
-      galleryPin: (tag,date)=>`fh.pin.${tag}.${date}`,
-      config: 'fh.cfg.v1'
+      fav:'fh.favorites.v1', diary:'fh.diary.v1', confess:'fh.confess.v1',
+      vote:(ym)=>`fh.vote.${ym}`, config:'fh.cfg.v1', galleryPin:(tag,date)=>`fh.pin.${tag}.${date}`
     };
     let favorites = JSON.parse(localStorage.getItem(KEY.fav)||'[]');
 
-    /* ---------- MEMBERS ---------- */
-    function heart(isOn){return isOn?'💖':'🤍'}
+    /* ===== MEMBERS ===== */
+    function heart(on){return on?'💖':'🤍'}
     function isFav(id){return favorites.includes(id)}
     function toggleFav(id){
-      if(isFav(id)) favorites = favorites.filter(x=>x!==id);
-      else favorites.push(id);
+      favorites = isFav(id) ? favorites.filter(x=>x!==id) : [...favorites,id];
       localStorage.setItem(KEY.fav, JSON.stringify(favorites));
       renderMembers(); renderFav();
     }
     function renderMembers(){
-      const group = $('#groupSel').value;
-      const q = ($('#search').value||'').trim().toLowerCase();
-      const onlyFav = $('#onlyFav').checked;
-      let list = MEMBERS.slice();
-      if(group!=='ALL') list = list.filter(m=>m.group===group);
-      if(q) list = list.filter(m=>m.name.toLowerCase().includes(q) || (m.tags||[]).join(',').toLowerCase().includes(q));
-      if(onlyFav) list = list.filter(m=>favorites.includes(m.id));
-      const grid = $('#memberGrid'); grid.innerHTML='';
+      const group=$('#groupSel').value;
+      const q=($('#search').value||'').trim().toLowerCase();
+      const onlyFav=$('#onlyFav').checked;
+      let list=MEMBERS.slice();
+      if(group!=='ALL') list=list.filter(m=>m.group===group);
+      if(q) list=list.filter(m=>m.name.toLowerCase().includes(q)||(m.tags||[]).join(',').toLowerCase().includes(q));
+      if(onlyFav) list=list.filter(m=>favorites.includes(m.id));
+      const grid=$('#memberGrid'); grid.innerHTML='';
       list.forEach(m=>{
-        const el = document.createElement('div'); el.className='card';
-        el.innerHTML = `
-          <div class="row">
-            <strong>${m.name}</strong>
-            <span class="pill">${m.group==='STELLIVE'?'ST':'IS'}</span>
-          </div>
+        const el=document.createElement('div'); el.className='card';
+        el.innerHTML=`
+          <div class="row"><strong>${m.name}</strong><span class="pill">${m.group==='STELLIVE'?'ST':'IS'}</span></div>
           <div class="muted" style="margin:6px 0">#${(m.tags||[]).join(' #')}</div>
           <div class="row">
             <a class="btn primary" href="${m.stream}" target="_blank" rel="noopener">채널 방문</a>
@@ -410,22 +319,19 @@
         grid.appendChild(el);
       });
     }
-    $('#groupSel')?.addEventListener('change', renderMembers);
-    $('#search')?.addEventListener('input', renderMembers);
-    $('#onlyFav')?.addEventListener('change', renderMembers);
+    $('#groupSel').addEventListener('change', renderMembers);
+    $('#search').addEventListener('input', renderMembers);
+    $('#onlyFav').addEventListener('change', renderMembers);
 
-    /* ---------- FAVORITES ---------- */
+    /* ===== FAVORITES ===== */
     function renderFav(){
-      const wrap = $('#favWrap'); wrap.innerHTML='';
-      const list = MEMBERS.filter(m=>favorites.includes(m.id));
-      if(!list.length){ wrap.innerHTML = '<p class="muted">아직 최애가 없습니다. 멤버 카드에서 💖을 눌러 추가하세요.</p>'; return; }
+      const wrap=$('#favWrap'); wrap.innerHTML='';
+      const list=MEMBERS.filter(m=>favorites.includes(m.id));
+      if(!list.length){ wrap.innerHTML='<p class="muted">아직 최애가 없습니다. 멤버 카드에서 💖을 눌러 추가하세요.</p>'; return; }
       list.forEach(m=>{
-        const el = document.createElement('div'); el.className='card';
-        el.innerHTML = `
-          <div class="row">
-            <strong>${m.name}</strong>
-            <span class="pill">${m.group==='STELLIVE'?'ST':'IS'}</span>
-          </div>
+        const el=document.createElement('div'); el.className='card';
+        el.innerHTML=`
+          <div class="row"><strong>${m.name}</strong><span class="pill">${m.group==='STELLIVE'?'ST':'IS'}</span></div>
           <div class="muted" style="margin:6px 0">#${(m.tags||[]).join(' #')}</div>
           <div class="row">
             <a class="btn primary" href="${m.stream}" target="_blank" rel="noopener">채널 방문</a>
@@ -436,40 +342,34 @@
       });
     }
 
-    /* ---------- COVER ---------- */
+    /* ===== COVER ===== */
     function populateCoverSel(){
-      const sel = $('#coverSel'); sel.innerHTML='';
+      const sel=$('#coverSel'); sel.innerHTML='';
       MEMBERS.forEach(m=>{
-        const has = PLAYLISTS.find(p=>p.member===m.id);
-        if(!has) return;
-        const op = document.createElement('option');
-        op.value = m.id; op.textContent = `${m.group==='STELLIVE'?'[ST]':'[IS]'} ${m.name}`;
+        const has=PLAYLISTS.find(p=>p.member===m.id); if(!has) return;
+        const op=document.createElement('option'); op.value=m.id; op.textContent=`${m.group==='STELLIVE'?'[ST]':'[IS]'} ${m.name}`;
         sel.appendChild(op);
       });
-      if(sel.options.length && !sel.value) sel.value = sel.options[0].value;
+      if(sel.options.length && !sel.value) sel.value=sel.options[0].value;
     }
     function renderCover(){
-      const id = $('#coverSel').value;
-      const pl = PLAYLISTS.find(p=>p.member===id);
-      const wrap = $('#coverWrap'); wrap.innerHTML='';
+      const id=$('#coverSel').value;
+      const pl=PLAYLISTS.find(p=>p.member===id);
+      const wrap=$('#coverWrap'); wrap.innerHTML='';
       if(!pl){ wrap.innerHTML='<p class="muted">재생목록이 없습니다.</p>'; return; }
-      const ifr = document.createElement('iframe');
-      ifr.width='100%'; ifr.style.aspectRatio='16/9'; ifr.loading='lazy';
-      ifr.src = pl.url; ifr.allowFullscreen = true; ifr.frameBorder = '0';
-      wrap.appendChild(ifr);
-      const cap = document.createElement('div'); cap.className='muted'; cap.style.marginTop='6px';
-      cap.textContent = pl.label + ' 커버 재생목록';
+      const ifr=document.createElement('iframe');
+      ifr.width='100%'; ifr.style.aspectRatio='16/9'; ifr.loading='lazy'; ifr.frameBorder='0'; ifr.allowFullscreen=true;
+      ifr.src=pl.url; wrap.appendChild(ifr);
+      const cap=document.createElement('div'); cap.className='muted'; cap.style.marginTop='6px'; cap.textContent=pl.label+' 커버 재생목록';
       wrap.appendChild(cap);
     }
-    $('#coverSel')?.addEventListener('change', renderCover);
+    $('#coverSel').addEventListener('change', renderCover);
     function openCover(id){ switchTab('cover'); $('#coverSel').value=id; renderCover(); }
 
-    /* ---------- FANART ---------- */
+    /* ===== FANART ===== */
     function renderFanartUI(){
-      const gm = $('#fanMember');
-      const group = $('#fanGroup').value;
-      gm.innerHTML='';
-      MEMBERS.filter(m=>m.group===(group)).forEach(m=>{
+      const gm=$('#fanMember'); const group=$('#fanGroup').value; gm.innerHTML='';
+      MEMBERS.filter(m=>m.group===group).forEach(m=>{
         const op=document.createElement('option'); op.value=m.id; op.textContent=m.name; gm.appendChild(op);
       });
       loadFanart();
@@ -477,111 +377,68 @@
     $('#fanGroup').addEventListener('change', renderFanartUI);
     $('#fanMember').addEventListener('change', loadFanart);
     $('#reloadFan').addEventListener('click', loadFanart);
-
-    function tagFor(memberId){
-      const m = MEMBERS.find(x=>x.id===memberId);
-      if(!m) return 'art';
-      return (m.tags?.[0]) || 'art';
-    }
-    function today(){ const d=new Date(); return d.toISOString().slice(0,10); }
-
+    function tagFor(memberId){ const m=MEMBERS.find(x=>x.id===memberId); return (m?.tags?.[0])||'art'; }
+    function today(){ return new Date().toISOString().slice(0,10); }
     async function loadFanart(){
-      const memberId = $('#fanMember').value;
-      const tag = tagFor(memberId);
-      const gallery = $('#fanGallery'); gallery.innerHTML='';
-      const proxy = (localStorage.getItem(KEY.config)? JSON.parse(localStorage.getItem(KEY.config)).xProxyBase : APP.xProxyBase) || '';
-
-      // 고정 이미지(오늘)
-      const pkey = KEY.galleryPin(tag, today());
-      const pin = JSON.parse(localStorage.getItem(pkey)||'null');
-      if(pin){
-        const fig=document.createElement('figure');
-        fig.innerHTML = `<img src="${pin.img}" alt="pinned"><figcaption class="muted">${tag} • 관리자 고정 <a href="${pin.src||'#'}" target="_blank">원본</a></figcaption>`;
-        gallery.appendChild(fig);
-      }
-
+      const memberId=$('#fanMember').value; const tag=tagFor(memberId);
+      const gallery=$('#fanGallery'); gallery.innerHTML='';
+      const proxy=(localStorage.getItem(KEY.config)? JSON.parse(localStorage.getItem(KEY.config)).xProxyBase : APP.xProxyBase) || '';
+      // pinned
+      const pkey=KEY.galleryPin(tag, today()); const pin=JSON.parse(localStorage.getItem(pkey)||'null');
+      if(pin){ const fig=document.createElement('figure'); fig.innerHTML=`<img src="${pin.img}" alt="pinned"><figcaption class="muted">${tag} • 관리자 고정 <a href="${pin.src||'#'}" target="_blank">원본</a></figcaption>`; gallery.appendChild(fig); }
       if(proxy){
-        // 프록시가 있다면 프록시에서 최신 이미지 10장 중 3장
         try{
-          const res = await fetch(`${proxy}/hashtag/${encodeURIComponent(tag)}?limit=10`);
-          const data = await res.json(); // [{img,src},...]
-          const picks = data.slice(0,10).sort(()=>Math.random()-0.5).slice(0,3);
-          picks.forEach(it=>{
-            const fig=document.createElement('figure');
-            fig.innerHTML = `<a href="${it.src}" target="_blank"><img src="${it.img}" alt="${tag}"></a>`;
-            gallery.appendChild(fig);
+          const res=await fetch(`${proxy}/hashtag/${encodeURIComponent(tag)}?limit=10`);
+          const data=await res.json(); // [{img,src}]
+          data.slice(0,10).sort(()=>Math.random()-0.5).slice(0,3).forEach(it=>{
+            const fig=document.createElement('figure'); fig.innerHTML=`<a href="${it.src}" target="_blank"><img src="${it.img}" alt="${tag}"></a>`; gallery.appendChild(fig);
           });
         }catch(e){
-          gallery.innerHTML += `<p class="muted">프록시 요청 실패. 해시태그 타임라인로 이동하세요.</p>`;
+          gallery.innerHTML+=`<p class="muted">프록시 요청 실패. 타임라인으로 이동하세요.</p>`;
           gallery.appendChild(tagLink(tag));
         }
       }else{
-        // 프록시 없으면 링크만
         gallery.appendChild(tagLink(tag));
       }
     }
-    function tagLink(tag){
-      const wrap=document.createElement('div');
-      wrap.innerHTML = `<a class="btn" href="https://x.com/hashtag/${encodeURIComponent(tag)}" target="_blank">#${tag} 타임라인 열기</a>`;
-      return wrap;
-    }
-    // 관리자 패널 동작
+    function tagLink(tag){ const d=document.createElement('div'); d.innerHTML=`<a class="btn" href="https://x.com/hashtag/${encodeURIComponent(tag)}" target="_blank">#${tag} 타임라인 열기</a>`; return d; }
+    // Admin
     $('#adminToggle').addEventListener('click', ()=>$('#adminPanel').classList.toggle('hide'));
     $('#saveProxy').addEventListener('click', ()=>{
-      const v = $('#xProxy').value.trim();
-      const cfg = JSON.parse(localStorage.getItem(KEY.config)||'{}'); cfg.xProxyBase = v;
-      localStorage.setItem(KEY.config, JSON.stringify(cfg));
-      alert('저장됨. 갤러리를 새로고침하세요.');
+      const v=$('#xProxy').value.trim(); const cfg=JSON.parse(localStorage.getItem(KEY.config)||'{}'); cfg.xProxyBase=v;
+      localStorage.setItem(KEY.config, JSON.stringify(cfg)); alert('저장됨. 갤러리를 새로고침하세요.');
     });
     $('#savePin').addEventListener('click', ()=>{
-      const memberId = $('#fanMember').value;
-      const tag = tagFor(memberId);
-      const img = $('#pinImage').value.trim();
-      const src = $('#pinLink').value.trim();
-      localStorage.setItem(KEY.galleryPin(tag, today()), JSON.stringify({img,src}));
-      loadFanart();
+      const memberId=$('#fanMember').value; const tag=tagFor(memberId);
+      const img=$('#pinImage').value.trim(); const src=$('#pinLink').value.trim();
+      localStorage.setItem(KEY.galleryPin(tag, today()), JSON.stringify({img,src})); loadFanart();
     });
     $('#clearPin').addEventListener('click', ()=>{
-      const memberId = $('#fanMember').value; const tag = tagFor(memberId);
-      localStorage.removeItem(KEY.galleryPin(tag, today()));
-      loadFanart();
+      const memberId=$('#fanMember').value; const tag=tagFor(memberId);
+      localStorage.removeItem(KEY.galleryPin(tag, today())); loadFanart();
     });
     $('#useUpload').addEventListener('click', ()=>{
-      const file = $('#uploadImg').files?.[0]; if(!file) return alert('이미지 선택');
-      const reader = new FileReader();
-      reader.onload = ()=>{
-        const gallery=$('#fanGallery'); const fig=document.createElement('figure');
-        fig.innerHTML = `<img src="${reader.result}" alt="upload"><figcaption class="muted">수동 업로드(로컬 저장)</figcaption>`;
-        gallery.prepend(fig);
-      };
-      reader.readAsDataURL(file);
+      const file=$('#uploadImg').files?.[0]; if(!file) return alert('이미지 선택');
+      const reader=new FileReader(); reader.onload=()=>{
+        const fig=document.createElement('figure'); fig.innerHTML=`<img src="${reader.result}" alt="upload"><figcaption class="muted">수동 업로드(로컬)</figcaption>`; $('#fanGallery').prepend(fig);
+      }; reader.readAsDataURL(file);
     });
     $('#addTweet').addEventListener('click', ()=>{
-      const url = $('#tweetUrl').value.trim(); if(!url) return;
-      const div = document.createElement('div');
-      div.innerHTML = `<blockquote class="twitter-tweet"><a href="${url}"></a></blockquote>`;
-      $('#fanGallery').prepend(div);
-      // Load widget script one-time
-      if(!window.__twLoaded){
-        const s=document.createElement('script'); s.src='https://platform.twitter.com/widgets.js'; s.async=true;
-        document.body.appendChild(s); window.__twLoaded=true;
-      }else if(window.twttr?.widgets){ window.twttr.widgets.load(); }
+      const url=$('#tweetUrl').value.trim(); if(!url) return;
+      const div=document.createElement('div'); div.innerHTML=`<blockquote class="twitter-tweet"><a href="${url}"></a></blockquote>`; $('#fanGallery').prepend(div);
+      if(!window.__twLoaded){ const s=document.createElement('script'); s.src='https://platform.twitter.com/widgets.js'; s.async=true; document.body.appendChild(s); window.__twLoaded=true; } else if(window.twttr?.widgets){ window.twttr.widgets.load(); }
     });
 
-    /* ---------- DIARY / CONFESS ---------- */
+    /* ===== DIARY / CONFESS ===== */
     function renderList(key, elId){
-      const items = JSON.parse(localStorage.getItem(key)||'[]');
+      const items=JSON.parse(localStorage.getItem(key)||'[]');
       const ul=$(elId); ul.innerHTML='';
       items.forEach((t,idx)=>{
-        const li=document.createElement('li');
-        li.innerHTML = `<span>${t.text}</span><button class="btn" data-idx="${idx}">삭제</button>`;
-        ul.appendChild(li);
+        const li=document.createElement('li'); li.innerHTML=`<span>${t.text}</span><button class="btn" data-idx="${idx}">삭제</button>`; ul.appendChild(li);
       });
       ul.querySelectorAll('button').forEach(btn=>btn.addEventListener('click',e=>{
-        const idx=+e.currentTarget.dataset.idx;
-        const arr=JSON.parse(localStorage.getItem(key)||'[]'); arr.splice(idx,1);
-        localStorage.setItem(key, JSON.stringify(arr));
-        renderList(key, elId);
+        const idx=+e.currentTarget.dataset.idx; const arr=JSON.parse(localStorage.getItem(key)||'[]'); arr.splice(idx,1);
+        localStorage.setItem(key, JSON.stringify(arr)); renderList(key, elId);
       }));
     }
     $('#addDiary').addEventListener('click', ()=>{
@@ -597,27 +454,20 @@
     });
     function renderConf(){ renderList(KEY.confess, '#confList'); }
 
-    /* ---------- VOTE ---------- */
-    function ym(){ const d=new Date(); return d.toISOString().slice(0,7); } // YYYY-MM
+    /* ===== VOTE ===== */
+    function ym(){ return new Date().toISOString().slice(0,7); }
     function populateVoteSel(){
-      const scope=$('#voteScope').value;
-      const sel=$('#voteSel'); sel.innerHTML='';
-      let list = MEMBERS.slice();
-      if(scope!=='ALL') list = list.filter(m=>m.group===scope);
-      list.forEach(m=>{
-        const op=document.createElement('option'); op.value=m.id; op.textContent=`${m.group==='STELLIVE'?'[ST]':'[IS]'} ${m.name}`;
-        sel.appendChild(op);
-      });
+      const scope=$('#voteScope').value; const sel=$('#voteSel'); sel.innerHTML='';
+      let list=MEMBERS.slice(); if(scope!=='ALL') list=list.filter(m=>m.group===scope);
+      list.forEach(m=>{ const op=document.createElement('option'); op.value=m.id; op.textContent=`${m.group==='STELLIVE'?'[ST]':'[IS]'} ${m.name}`; sel.appendChild(op); });
     }
     $('#voteScope').addEventListener('change', ()=>{ populateVoteSel(); renderVoteChart(); });
     $('#doVote').addEventListener('click', ()=>{
       const id=$('#voteSel').value; const key=KEY.vote(ym());
       const state=JSON.parse(localStorage.getItem(key)||'{"voted":false,"counts":{}}');
-      if(state.voted){ alert('이번 달은 이미 투표했습니다.'); return; }
+      if(state.voted) return alert('이번 달은 이미 투표했습니다.');
       state.voted=true; state.counts[id]=(state.counts[id]||0)+1;
-      localStorage.setItem(key, JSON.stringify(state));
-      renderVoteChart();
-      alert('투표 완료!');
+      localStorage.setItem(key, JSON.stringify(state)); renderVoteChart(); alert('투표 완료!');
     });
     $('#myVote').addEventListener('click', ()=>{
       const state=JSON.parse(localStorage.getItem(KEY.vote(ym()))||'{"voted":false}');
@@ -625,24 +475,14 @@
     });
     let voteChart=null;
     function renderVoteChart(){
-      const key=KEY.vote(ym()); const state=JSON.parse(localStorage.getItem(key)||'{"counts":{}}');
-      const counts=state.counts||{};
-      const labels=MEMBERS.map(m=>m.name);
-      const data=MEMBERS.map(m=>counts[m.id]||0);
-      const ctx=$('#voteChart').getContext('2d');
-      if(voteChart) voteChart.destroy();
-      voteChart = new Chart(ctx, {
-        type:'bar',
-        data:{ labels, datasets:[{ label:'득표수', data }] },
-        options:{ scales:{ y:{ beginAtZero:true } } }
-      });
+      const key=KEY.vote(ym()); const state=JSON.parse(localStorage.getItem(key)||'{"counts":{}}'); const counts=state.counts||{};
+      const labels=MEMBERS.map(m=>m.name); const data=MEMBERS.map(m=>counts[m.id]||0);
+      const ctx=$('#voteChart').getContext('2d'); if(voteChart) voteChart.destroy();
+      voteChart=new Chart(ctx,{type:'bar',data:{labels,datasets:[{label:'득표수',data}]},options:{scales:{y:{beginAtZero:true}}}});
     }
 
-    /* ---------- INIT ---------- */
-    function boot(){
-      loadConfig();
-      switchTab((location.hash||'#home').slice(1) || 'home');
-    }
+    /* ===== INIT ===== */
+    function boot(){ loadConfig(); switchTab((location.hash||'#home').slice(1) || 'home'); }
     boot();
   </script>
 </body>

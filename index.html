@@ -1,714 +1,649 @@
 <!doctype html>
 <html lang="ko">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Stellive × Isegye — Fan Hub (v9.3)</title>
-
-  <!-- Reset + Base -->
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>스텔라이브 & 이세계아이돌 팬 허브 (복구판 v9.1C)</title>
+  <meta name="color-scheme" content="dark light">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <script defer src="https://accounts.google.com/gsi/client"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   <style>
-    *, *::before, *::after { box-sizing: border-box; }
-    html, body { margin:0; padding:0; height:100%; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Noto Sans, sans-serif; }
-    :root {
-      --bg: #0b0c10;
-      --panel: #111217;
-      --ink: #e9eef4;
-      --muted: #b9c2cf;
-      --brand: #8b5cf6;
-      --brand-2: #06b6d4;
-      --ok: #10b981;
-      --warn: #f59e0b;
-      --err: #ef4444;
-      --card: #141722;
-      --card-2: #0e111a;
-      --line: #242738;
+    :root{
+      --bg:#0e1117; --surface:#111827; --elev:#0c1220; --stroke:#253046;
+      --text:#eaeef7; --muted:#a7b1c6; --brand:#8b8fff; --brand-2:#ff7dbc;
+      --ok:#64d2b3; --warn:#ffcc66; --bad:#ff7d7d; --radius:16px;
     }
-    body { background: radial-gradient(1200px 600px at 80% -10%, rgba(139,92,246,.3), transparent), radial-gradient(900px 500px at 0% 0%, rgba(6,182,212,.25), transparent), var(--bg); color: var(--ink); }
-    a { color: #93c5fd; text-decoration: none; }
-    a:hover { text-decoration: underline; }
-    .container { max-width: 1100px; margin: 0 auto; padding: 20px; }
-    header.nav {
-      position: sticky; top:0; z-index:50;
-      backdrop-filter: blur(8px);
-      background: linear-gradient(180deg, rgba(8,10,16,.85), rgba(8,10,16,.45));
-      border-bottom: 1px solid var(--line);
-    }
-    .bar { display:flex; align-items:center; gap:14px; padding: 14px 20px; }
-    .brand { font-weight: 800; letter-spacing:.3px; display:flex; align-items:center; gap:10px; }
-    .brand .dot { width:10px; height:10px; border-radius:50%; background: conic-gradient(var(--brand), var(--brand-2)); box-shadow: 0 0 20px rgba(139,92,246,.6); }
-    .tabs { display:flex; gap:8px; flex-wrap: wrap; }
-    .tabs button {
-      background: transparent; color: var(--muted); border:1px solid transparent; padding:8px 12px; border-radius: 999px; cursor:pointer;
-    }
-    .tabs button.active { color: var(--ink); border-color: var(--line); background: #11131b; }
-    .grow { flex:1; }
-    .pill { padding:6px 10px; border:1px solid var(--line); border-radius:999px; font-size:12px; color: var(--muted); }
-    .btn { background: linear-gradient(135deg, var(--brand), var(--brand-2)); border:none; border-radius:10px; color:white; padding:10px 12px; cursor:pointer; }
-    .btn.ghost { background: transparent; border:1px solid var(--line); color: var(--ink); }
-    .grid { display:grid; gap:14px; grid-template-columns: repeat(12, 1fr); }
-    .card { background: linear-gradient(180deg, var(--card), var(--card-2)); border:1px solid var(--line); border-radius:14px; padding:16px; }
-    .hero { margin: 18px 0 8px; padding: 26px; border: 1px dashed #2a2f45; border-radius: 16px; background: linear-gradient(180deg, rgba(139,92,246,.08), rgba(6,182,212,.06)); }
-    .hero h1 { margin:0 0 6px; font-size: 28px; }
-    .muted { color: var(--muted); }
-    .hide { display:none !important; }
-    .row { display:flex; gap:10px; align-items:center; flex-wrap: wrap; }
-    .tag { padding:4px 8px; border:1px solid var(--line); border-radius:8px; color: var(--muted); font-size:12px; }
-    .list { display:flex; flex-wrap: wrap; gap:10px; }
-    .member-card { display:flex; gap:12px; align-items:flex-start; }
-    .member-card img { width:70px; height:70px; border-radius: 10px; object-fit:cover; background:#0b0d14; border:1px solid var(--line); }
-    .member-card .meta { flex:1; }
-    .member-card .meta h4 { margin: 0 0 4px; }
-    .section h2 { margin: 10px 0; }
-    .kbar { display:flex; gap:10px; align-items:center; }
-    input, select, textarea { background:#0b0d14; color: var(--ink); border:1px solid var(--line); border-radius:10px; padding:8px 10px; }
-    textarea { width:100%; min-height: 90px; }
-    .item { padding:10px; border:1px solid var(--line); border-radius:10px; background:#0c0f17; }
-    .slim { padding:6px 8px; font-size:13px; }
-    .right { margin-left:auto; }
-    .thumb { width:100%; aspect-ratio: 16/9; border-radius:10px; border:1px solid var(--line); background:#05060a; }
-    .gallery { display:grid; grid-template-columns: repeat(auto-fill, minmax(220px,1fr)); gap:12px; }
-    .toast { position:fixed; right:16px; bottom:16px; background:#0f172a; color:#e2e8f0; border:1px solid #1f2a44; padding:10px 14px; border-radius:10px; box-shadow:0 10px 30px rgba(0,0,0,.25); }
-    .hr { height:1px; background: linear-gradient(90deg, transparent, #2b3046, transparent); margin:10px 0; }
-    .warn { color: var(--warn); }
-    footer { color:#8a93a8; font-size:12px; text-align:center; padding:30px 10px; }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:var(--bg);color:var(--text);
+      font-family: Pretendard, system-ui, -apple-system, 'Noto Sans KR', Segoe UI, Roboto, sans-serif;}
+    a{color:var(--brand);text-decoration:none}
+    img{max-width:100%;display:block}
+    .container{max-width:1180px;margin:0 auto;padding:0 16px}
+    header{position:sticky;top:0;z-index:20;background:linear-gradient(180deg,rgba(7,10,16,.9),rgba(7,10,16,.35),rgba(7,10,16,0));
+      border-bottom:1px solid var(--stroke);backdrop-filter:saturate(1.1) blur(10px)}
+    .nav{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 0}
+    .brand{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.2px}
+    .brand .badge{border:1px solid var(--stroke);padding:.25rem .6rem;border-radius:999px;color:var(--muted);font-size:.85rem;background:#0b1322}
+    .tabs{display:flex;gap:6px;flex-wrap:wrap}
+    .tabs button{border:1px solid var(--stroke);background:#0c1425;color:var(--text);
+      padding:.5rem .8rem;border-radius:12px;cursor:pointer}
+    .tabs button.active{background:var(--brand);color:#101218;border-color:transparent}
+    .right{display:flex;gap:8px;align-items:center}
+    .btn{border:1px solid var(--stroke);background:#0c1425;color:var(--text);padding:.5rem .7rem;border-radius:10px;cursor:pointer}
+    .btn.primary{background:var(--brand);border-color:transparent;color:#111}
+    .btn.ghost{background:transparent}
+    .pill{display:inline-block;border:1px solid var(--stroke);border-radius:999px;padding:.25rem .6rem;color:var(--muted);background:#0b1322}
+    .muted{color:var(--muted)}
+    main{display:grid;gap:14px}
+    section{border:1px solid var(--stroke);border-radius:var(--radius);padding:14px;background:linear-gradient(180deg,#101626,rgba(255,255,255,.03))}
+    h1,h2,h3{margin:.2rem 0 .6rem 0}
+    h1{font-size:1.6rem}
+    h2{font-size:1.25rem}
+    .hide{display:none}
+
+    /* HERO (현재 버전에서 마음에 들었던 메인 화면 스타일 유지) */
+    .hero{display:grid;grid-template-columns:1.2fr .8fr;gap:12px;align-items:center}
+    .hero .panel{border:1px solid var(--stroke);border-radius:14px;background:#0c1424;padding:12px}
+    .hero .cta{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+    @media(max-width:920px){.hero{grid-template-columns:1fr}}
+
+    /* grids */
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px}
+    .card{border:1px solid var(--stroke);border-radius:12px;background:#0c1424;padding:10px}
+    .row{display:flex;align-items:center;justify-content:space-between;gap:8px}
+    .controls{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 10px}
+    input,select,textarea{border:1px solid var(--stroke);background:#0c1425;color:var(--text);padding:.5rem .6rem;border-radius:10px;width:100%}
+    textarea{min-height:84px;resize:vertical}
+    .tool{display:flex;gap:8px;flex-wrap:wrap}
+    .kbar{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+
+    /* list */
+    .list{display:grid;gap:6px}
+    .list li{display:flex;align-items:center;justify-content:space-between;gap:8px;border:1px solid var(--stroke);background:#0c1424;padding:8px;border-radius:10px}
+
+    /* gallery */
+    .gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
+    .gallery figure{border:1px solid var(--stroke);border-radius:12px;background:#0c1424;padding:10px}
+    .gallery img{border-radius:10px}
+
+    /* chart wrap */
+    .chart-wrap{border:1px solid var(--stroke);border-radius:12px;background:#0c1424;padding:10px}
+
+    footer{padding:30px 0;color:var(--muted);text-align:center}
   </style>
-
-  <!-- Google Identity Services -->
-  <script src="https://accounts.google.com/gsi/client" async defer></script>
-
-  <!-- Chart.js for voting result -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-  <header class="nav">
-    <div class="bar container">
-      <div class="brand"><span class="dot"></span> Stellive × Isegye Fan Hub</div>
-      <nav class="tabs" id="tabs">
+  <header>
+    <div class="container nav">
+      <div class="brand">
+        <span>팬 허브</span>
+        <span class="badge">STELLIVE & ISEGYE</span>
+      </div>
+
+      <nav class="tabs">
         <button data-tab="home" class="active">홈</button>
         <button data-tab="members">멤버</button>
         <button data-tab="favorites">최애</button>
-        <button data-tab="gallery">팬아트</button>
-        <button data-tab="covers">커버곡</button>
-        <button data-tab="diary">일기/고백</button>
+        <button data-tab="fanart">팬아트</button>
+        <button data-tab="cover">커버곡</button>
+        <button data-tab="diary">덕질 일기</button>
+        <button data-tab="confess">익명 고백함</button>
         <button data-tab="vote">투표</button>
-        <button data-tab="settings" id="settingsTab" class="hide">⚙️설정</button>
       </nav>
-      <div class="grow"></div>
-      <div id="liveBadge" class="pill hide">📡 라이브 확인 중…</div>
-      <div id="userBadge" class="pill">로그인 필요</div>
-      <button id="loginBtn" class="btn slim">Google 로그인</button>
-      <button id="logoutBtn" class="btn ghost slim hide">로그아웃</button>
+
+      <div class="right">
+        <button id="themeBtn" class="btn">🌗</button>
+        <span id="userBadge" class="pill">로그아웃 상태</span>
+        <div id="signinBtn" class="btn primary">Google 로그인</div>
+        <button id="adminBtn" class="btn hide">⚙️ 설정</button>
+      </div>
     </div>
   </header>
 
   <main class="container">
-    <!-- HOME -->
-    <section id="home" class="section">
-      <div class="hero">
-        <h1>스텔라이브 × 이세계아이돌 — 팬 허브</h1>
-        <div class="muted">최애 묶음 보기, 팬아트 전시, 전 멤버 커버곡, 일기/고백, 투표, 라이브 배너까지.</div>
-        <div class="row" style="margin-top:10px;">
-          <button class="btn" onclick="goTab('members')">멤버 보기</button>
-          <button class="btn ghost" onclick="goTab('gallery')">팬아트 갤러리</button>
-          <button class="btn ghost" onclick="goTab('covers')">커버곡</button>
+    <!-- HOME (현재 메인 유지) -->
+    <section id="home" class="hero">
+      <div>
+        <span class="pill">복원판 v9.1C</span>
+        <h1>스텔라이브 & 이세계아이돌 — 팬 허브</h1>
+        <p class="muted">이전 버전 기능을 되살리고, 현재 마음에 드는 메인(히어로) 디자인만 유지한 하이브리드입니다.</p>
+        <div class="cta">
+          <button class="btn primary" onclick="switchTab('members')">멤버 보기</button>
+          <button class="btn" onclick="switchTab('favorites')">최애 모아보기</button>
+          <button class="btn" onclick="switchTab('fanart')">팬아트</button>
+          <button class="btn" onclick="switchTab('cover')">커버곡</button>
+          <button class="btn" onclick="switchTab('vote')">투표</button>
         </div>
       </div>
-
-      <div class="grid">
-        <div class="card" style="grid-column: span 12;">
-          <b>공지</b> — Google 로그인으로 내 최애/투표/일기/고백을 기기에 저장합니다. 관리자는 팬아트 고정/프록시 설정 가능.
-        </div>
+      <div class="panel">
+        <h2>알림 & 사용법</h2>
+        <ul class="muted">
+          <li>Google 로그인 시 관리자라면 팬아트 고정/업로드/트윗 추가 가능</li>
+          <li>최애는 여러 명 지정 → ‘최애’ 탭에서 한 번에 보기</li>
+          <li>투표는 월 1표(브라우저 기준)</li>
+          <li>팬아트 이미지는 X 프록시가 없으면 타임라인 폴백</li>
+        </ul>
       </div>
     </section>
 
     <!-- MEMBERS -->
-    <section id="members" class="section hide">
-      <div class="row">
-        <select id="groupSelect">
+    <section id="members" class="hide">
+      <h2>멤버 소개</h2>
+      <div class="controls">
+        <select id="groupSel">
           <option value="ALL">전체</option>
-          <option value="ST">STELLIVE</option>
-          <option value="IS">ISEGYE</option>
+          <option value="STELLIVE">STELLIVE</option>
+          <option value="ISEGYE">이세계아이돌</option>
         </select>
-        <input id="memberSearch" placeholder="멤버 검색" />
-        <label class="row"><input type="checkbox" id="favoriteOnly" /> 최애만 보기</label>
+        <input id="search" placeholder="이름/태그 검색"/>
+        <div class="kbar">
+          <label class="pill"><input type="checkbox" id="onlyFav"> 최애만</label>
+          <button class="btn" onclick="location.hash='#fanart'">팬아트</button>
+          <button class="btn" onclick="location.hash='#cover'">커버곡</button>
+        </div>
       </div>
-      <div class="hr"></div>
-      <div id="memberList" class="grid"></div>
+      <div id="memberGrid" class="grid"></div>
     </section>
 
     <!-- FAVORITES -->
-    <section id="favorites" class="section hide">
-      <h2>내 최애 (여러 명 가능)</h2>
-      <div class="muted">즐겨찾기한 멤버 카드가 여기 모여요.</div>
-      <div class="hr"></div>
-      <div id="favList" class="grid"></div>
+    <section id="favorites" class="hide">
+      <h2>최애(여러 명) — 한 곳에서</h2>
+      <div id="favWrap" class="grid"></div>
+      <p class="muted">카드의 하트를 눌러 최애를 추가/삭제할 수 있어요.</p>
     </section>
 
-    <!-- GALLERY -->
-    <section id="gallery" class="section hide">
-      <div class="row">
-        <select id="tagSelect"></select>
-        <button class="btn slim" onclick="loadGallery()">새로고침</button>
-        <div class="grow"></div>
-        <button id="adminToggle" class="btn ghost slim hide" onclick="toggleAdmin()">🛠️ 관리자</button>
+    <!-- FANART -->
+    <section id="fanart" class="hide">
+      <h2>팬아트 갤러리</h2>
+      <div class="controls">
+        <select id="fanGroup">
+          <option value="STELLIVE">STELLIVE</option>
+          <option value="ISEGYE">이세계아이돌</option>
+        </select>
+        <select id="fanMember"></select>
+        <button class="btn" id="reloadFan">새로고침</button>
+        <button class="btn hide" id="adminToggle">🛠️ 관리자</button>
       </div>
       <div id="adminPanel" class="card hide">
-        <div class="row">
-          <input id="proxyInput" placeholder="X 프록시 주소 (예: https://your-proxy.workers.dev)" style="flex:1;" />
-          <button class="btn slim" onclick="saveProxy()">저장</button>
+        <h3>관리자 패널</h3>
+        <div class="controls">
+          <input id="xProxy" placeholder="X 프록시 주소 (예: https://your-worker.workers.dev)">
+          <button class="btn" id="saveProxy">프록시 저장</button>
         </div>
-        <div class="row" style="margin-top:8px;">
-          <input id="pinImgUrl" placeholder="오늘 고정 이미지 URL" style="flex:1;" />
-          <input id="pinImgLink" placeholder="원본 링크 (선택)" style="flex:1;" />
-          <button class="btn slim" onclick="pinToday()">오늘 고정</button>
-          <button class="btn ghost slim" onclick="unpinToday()">고정 해제</button>
+        <div class="controls">
+          <input id="pinImage" placeholder="오늘 고정 이미지 URL">
+          <input id="pinLink" placeholder="원본 링크(선택)">
+          <button class="btn" id="savePin">오늘 고정 등록</button>
+          <button class="btn" id="clearPin">해제</button>
         </div>
-        <div class="row" style="margin-top:8px;">
-          <input id="tweetUrl" placeholder="트윗 URL 임베드 (https://x.com/...)" style="flex:1;" />
-          <button class="btn slim" onclick="addTweet()">트윗 추가</button>
-          <input type="file" id="uploadImg" accept="image/*" />
-          <button class="btn ghost slim" onclick="addUpload()">수동 업로드</button>
+        <div class="controls">
+          <input type="file" id="uploadImg" accept="image/*">
+          <button class="btn" id="useUpload">수동 업로드 → 전시</button>
+          <input id="tweetUrl" placeholder="트윗 URL (https://x.com/...)">
+          <button class="btn" id="addTweet">트윗 임베드</button>
         </div>
       </div>
-      <div class="hr"></div>
-      <div id="galleryGrid" class="gallery"></div>
-      <div id="timelineFallback" class="card hide" style="margin-top:10px;">
-        <div class="muted">프록시가 없으면 타임라인 임베드를 보여줘요.</div>
-        <div id="timelineBox"></div>
-      </div>
+      <div id="fanGallery" class="gallery"></div>
+      <p class="muted">※ 프록시 미설정 시, 이미지 3장 랜덤 전시 대신 해당 태그의 타임라인으로 이동 링크를 제공합니다.</p>
     </section>
 
-    <!-- COVERS -->
-    <section id="covers" class="section hide">
-      <div class="row">
-        <select id="coverSelect"></select>
-        <button class="btn slim" onclick="loadCover()">재생목록 열기</button>
+    <!-- COVER -->
+    <section id="cover" class="hide">
+      <h2>커버곡 재생목록</h2>
+      <div class="controls">
+        <select id="coverSel"></select>
       </div>
-      <div class="hr"></div>
-      <div class="card">
-        <iframe id="ytEmbed" class="thumb" allowfullscreen frameborder="0"
-          src="about:blank" referrerpolicy="strict-origin-when-cross-origin"></iframe>
-      </div>
+      <div id="coverWrap" class="card"></div>
     </section>
 
-    <!-- DIARY / CONFESS -->
-    <section id="diary" class="section hide">
-      <div class="grid">
-        <div class="card" style="grid-column: span 6;">
-          <h3>덕질 일기</h3>
-          <div class="row"><input id="diaryInput" placeholder="오늘의 덕질 기록…" style="flex:1;" /><button class="btn slim" onclick="addDiary()">추가</button></div>
-          <div id="diaryList" style="margin-top:10px;"></div>
-        </div>
-        <div class="card" style="grid-column: span 6;">
-          <h3>익명 고백함</h3>
-          <div class="row"><input id="confInput" placeholder="응원/고백…" style="flex:1;" /><button class="btn slim" onclick="addConf()">추가</button></div>
-          <div id="confList" style="margin-top:10px;"></div>
-        </div>
+    <!-- DIARY -->
+    <section id="diary" class="hide">
+      <h2>덕질 일기</h2>
+      <div class="controls">
+        <textarea id="diaryText" placeholder="오늘의 덕질 기록..."></textarea>
+        <button class="btn primary" id="addDiary">추가</button>
       </div>
+      <ul id="diaryList" class="list"></ul>
+    </section>
+
+    <!-- CONFESS -->
+    <section id="confess" class="hide">
+      <h2>익명 고백함</h2>
+      <div class="controls">
+        <textarea id="confText" placeholder="응원/고백 메시지... (익명)"></textarea>
+        <button class="btn primary" id="addConf">추가</button>
+      </div>
+      <ul id="confList" class="list"></ul>
     </section>
 
     <!-- VOTE -->
-    <section id="vote" class="section hide">
-      <div class="row">
+    <section id="vote" class="hide">
+      <h2>월간 투표</h2>
+      <div class="controls">
         <select id="voteScope">
           <option value="ALL">전체</option>
-          <option value="ST">STELLIVE</option>
-          <option value="IS">ISEGYE</option>
+          <option value="STELLIVE">STELLIVE</option>
+          <option value="ISEGYE">이세계아이돌</option>
         </select>
-        <select id="voteMember"></select>
-        <button class="btn slim" onclick="doVote()">투표</button>
-        <button class="btn ghost slim" onclick="showMyVote()">내 투표 확인</button>
+        <select id="voteSel"></select>
+        <button class="btn primary" id="doVote">투표</button>
+        <button class="btn" id="myVote">내 투표 확인</button>
       </div>
-      <div class="hr"></div>
-      <div class="grid">
-        <div class="card" style="grid-column: span 5;">
-          <h3>결과</h3>
-          <canvas id="voteChart"></canvas>
-        </div>
-        <div class="card" style="grid-column: span 7;">
-          <h3>설명</h3>
-          <div class="muted">투표는 **월 1회**로 제한됩니다(브라우저 기준). 범위를 바꾸면 해당 범위에서 집계됩니다.</div>
-        </div>
+      <div class="chart-wrap">
+        <canvas id="voteChart" height="220"></canvas>
       </div>
-    </section>
-
-    <!-- SETTINGS (ADMIN) -->
-    <section id="settings" class="section hide">
-      <h2>설정</h2>
-      <div class="card">
-        <div>로그인 이메일: <b id="meEmail">-</b></div>
-        <div>관리자 여부: <b id="meIsAdmin">-</b></div>
-        <div class="hr"></div>
-        <div class="row">
-          <input id="cfgClientId" placeholder="Google Client ID" style="flex:1;" />
-          <button class="btn slim" onclick="saveClientId()">Client ID 저장(로컬)</button>
-        </div>
-        <div class="row" style="margin-top:8px;">
-          <input id="cfgAdminEmails" placeholder="관리자 이메일(쉼표 구분)" style="flex:1;" />
-          <button class="btn slim" onclick="saveAdminEmails()">관리자 목록 저장(로컬)</button>
-        </div>
-        <div class="row" style="margin-top:8px;">
-          <input id="cfgProxy" placeholder="X 프록시 주소" style="flex:1;" />
-          <button class="btn slim" onclick="saveProxyFromSettings()">프록시 저장</button>
-        </div>
-        <div class="muted" style="margin-top:8px;">설정은 브라우저 로컬에 저장됩니다. 원본 `config/app-config.json`은 리포에서 직접 수정하세요.</div>
-      </div>
+      <p class="muted">※ 1인 1표/월(브라우저 기준).</p>
     </section>
   </main>
 
-  <footer>© 2025 Fan-made hub — Respect the original creators & platform ToS.</footer>
-
-  <div id="toast" class="toast hide"></div>
+  <footer class="container">
+    <p>© Fan-made hub. 이미지/영상은 각 저작권자에게 귀속됩니다.</p>
+  </footer>
 
   <script>
-    // ---------------------------
-    // Util & State
-    // ---------------------------
-    const $ = (sel) => document.querySelector(sel);
-    const $$ = (sel) => Array.from(document.querySelectorAll(sel));
-    const toast = (msg) => { const t=$("#toast"); t.textContent=msg; t.classList.remove("hide"); setTimeout(()=>t.classList.add("hide"), 2200)};
-
-    const state = {
-      cfg: { googleClientId: "", adminEmails: [], xProxyBase: "" },
-      me: { email: "", name: "", isAdmin:false },
-      favorites: new Set(JSON.parse(localStorage.getItem("favMembers")||"[]")),
-      votes: JSON.parse(localStorage.getItem("votes")||"{}"),
-      diary: JSON.parse(localStorage.getItem("diary")||"[]"),
-      conf: JSON.parse(localStorage.getItem("conf")||"[]"),
-      scope: "ALL",
-      chart: null
-    };
-
-    const ST = "ST"; const IS = "IS";
-
-    const MEMBERS = [
-      // STELLIVE (10)
-      { id:"kanna", name:"아이리 칸나", group:ST, chzzk:null, soop:null, yt:"https://www.youtube.com/@airikannach", hashtag:"Kanart", cover:"PLOPBV2KAIYnt1NJ0QCkfCqMRc00lfcjFa" },
-      { id:"yuni",  name:"아야츠노 유니", group:ST, chzzk:"https://chzzk.naver.com/45e71a76e949e16a34764deb962f9d9f", soop:null, yt:"https://www.youtube.com/@ayatsunoyuni", hashtag:"yunyart", cover:"PL3HtH_xx9h_7ZGoZ9zMUQ-MPumwe21_cc" },
-      { id:"hina",  name:"시라유키 히나", group:ST, chzzk:"https://chzzk.naver.com/b044e3a3b9259246bc92e863e7d3f3b8", soop:null, yt:"https://www.youtube.com/@shirayukihina", hashtag:"_hinart", cover:"PLzdLDJsHzz2NiuwjyW6QgSck4PrwlSyOc" },
-      { id:"mashiro",name:"네네코 마시로", group:ST, chzzk:"https://chzzk.naver.com/4515b179f86b67b4981e16190817c580", soop:null, yt:"https://www.youtube.com/@nenekomashiro", hashtag:"shiroart", cover:"PLWwhuXFHGLvhgZZb5_rmQEMI1B0ysKJxG" },
-      { id:"lize",  name:"아카네 리제", group:ST, chzzk:"https://chzzk.naver.com/4325b1d5bbc321fad3042306646e2e50", soop:null, yt:"https://www.youtube.com/@akanerize", hashtag:"Lize_art", cover:"PL-DHk0WpiRNSM5oI19ImJ8sSV65mnGseX" },
-      { id:"tabi",  name:"아라하시 타비", group:ST, chzzk:"https://chzzk.naver.com/a6c4ddb09cdb160478996007bff35296", soop:null, yt:"https://www.youtube.com/@arahashitabi", hashtag:"Tabiart", cover:"PLbIDsfX2JRA0oawGN209gpd_nz9IMvUlb" },
-      { id:"shibuki",name:"텐코 시부키", group:ST, chzzk:"https://chzzk.naver.com/516937b5f85cbf2249ce31b0ad046b0f", soop:null, yt:"https://www.youtube.com/@tenkoshibuki", hashtag:"shibuki_art", cover:"PLKVNBOcsLJlVii-8YwoZTD3o4gh5CnIND" },
-      { id:"rin",   name:"아오쿠모 린", group:ST, chzzk:"https://chzzk.naver.com/516937b5f85cbf2249ce31b0ad046b0f".replace("516937b5f85cbf2249ce31b0ad046b0f","516937b5f85cbf2249ce31b0ad046b0f"), soop:null, yt:"https://www.youtube.com/@yuzuhariko".replace("@yuzuhariko","@aokumorin"), hashtag:"kumorinart", cover:"PLSDRWR15h-o4uWNeoLv0upOUUGj12f-yU" },
-      { id:"nana",  name:"하나코 나나", group:ST, chzzk:"https://chzzk.naver.com/4d812b586ff63f8a2946e64fa860bbf5", soop:null, yt:"https://www.youtube.com/@hanakonana", hashtag:"Nanart_", cover:"PLJWmDIpvwe7Cri29xtAyQXLC1RLwOChpA" },
-      { id:"riko",  name:"유즈하 리코", group:ST, chzzk:"https://chzzk.naver.com/8fd39bb8de623317de90654718638b10", soop:null, yt:"https://www.youtube.com/@yuzuhariko", hashtag:"riko_art", cover:"PL_D2YrKeYY2UvRIw_SW3lQXzBDO7aBeii" },
-      // ISEGYE (6)
-      { id:"gosegu", name:"고세구", group:IS, chzzk:null, soop:"https://ch.sooplive.co.kr/gosegu2", yt:"https://www.youtube.com/@gosegu", hashtag:"고세구", cover:"PLZNwpHxpI4EjDSv3v_HY7udxDEqj4C7PL" },
-      { id:"lilpa",  name:"릴파", group:IS, chzzk:null, soop:"https://ch.sooplive.co.kr/lilpa0309", yt:"https://www.youtube.com/@lilpa", hashtag:"릴파", cover:"PLLPGQs-RNQXnFl55WissjQylZbInOK81P" },
-      { id:"viichan",name:"비챤", group:IS, chzzk:null, soop:"https://ch.sooplive.co.kr/viichan6", yt:"https://www.youtube.com/@viichan", hashtag:"비챤", cover:"PLhaJuLneKo5FdYnMZ1Jc5BaV7y26KvmD1" },
-      { id:"ine",    name:"아이네", group:IS, chzzk:null, soop:"https://ch.sooplive.co.kr/inehine", yt:"https://www.youtube.com/@ine", hashtag:"아이네", cover:"PLJWTWXJ7iqXctxVu1Fd3ZkF-WWD8kOzMb" },
-      { id:"jururu", name:"주르르", group:IS, chzzk:null, soop:"https://ch.sooplive.co.kr/cotton1217", yt:"https://www.youtube.com/@jururu", hashtag:"주르르", cover:"PLqE7uvTHaH31Wl8lCe3SYslZvoCnTD-JS" },
-      { id:"jing",   name:"징버거", group:IS, chzzk:null, soop:"https://ch.sooplive.co.kr/jingburger1", yt:"https://www.youtube.com/@jingburger", hashtag:"징버거", cover:"PLio0a5EPF6j099Af5uBaK6V25RtTvK4kq" },
-    ];
-
-    // tag list (for gallery selector)
-    const TAGS = [
-      // ST
-      { tag: "Kanart", label: "아이리 칸나 — #Kanart" },
-      { tag: "yunyart", label: "아야츠노 유니 — #yunyart" },
-      { tag: "_hinart", label: "시라유키 히나 — #_hinart" },
-      { tag: "shiroart", label: "네네코 마시로 — #shiroart" },
-      { tag: "Lize_art", label: "아카네 리제 — #Lize_art" },
-      { tag: "Tabiart", label: "아라하시 타비 — #Tabiart" },
-      { tag: "shibuki_art", label: "텐코 시부키 — #shibuki_art" },
-      { tag: "kumorinart", label: "아오쿠모 린 — #kumorinart" },
-      { tag: "Nanart_", label: "하나코 나나 — #Nanart_" },
-      { tag: "riko_art", label: "유즈하 리코 — #riko_art" },
-      // IS
-      { tag: "고세구", label: "고세구 — #고세구" },
-      { tag: "릴파", label: "릴파 — #릴파" },
-      { tag: "비챤", label: "비챤 — #비챤" },
-      { tag: "아이네", label: "아이네 — #아이네" },
-      { tag: "주르르", label: "주르르 — #주르르" },
-      { tag: "징버거", label: "징버거 — #징버거" },
-    ];
-
-    // ---------------------------
-    // Tabs
-    // ---------------------------
-    function goTab(id) {
-      $$("#tabs button").forEach(b=>b.classList.toggle("active", b.dataset.tab===id));
-      $$("main .section").forEach(s=>s.classList.toggle("hide", s.id!==id));
-      if(id==="members") renderMembers();
-      if(id==="favorites") renderFavs();
-      if(id==="gallery") { buildTagSelect(); loadGallery(); }
-      if(id==="covers") { buildCoverSelect(); }
-      if(id==="vote") { buildVoteSelect(); drawChart(); }
-      if(id==="settings") { fillSettings(); }
+    /* ---------- UTIL ---------- */
+    const $$ = (s)=>Array.from(document.querySelectorAll(s));
+    const $ = (s)=>document.querySelector(s);
+    function switchTab(id){
+      $$('.tabs button').forEach(b=>b.classList.toggle('active', b.dataset.tab===id));
+      $$('main > section').forEach(sec=>sec.classList.toggle('hide', sec.id!==id));
+      location.hash = '#'+id;
+      if(id==='members') renderMembers();
+      if(id==='favorites') renderFav();
+      if(id==='fanart') renderFanartUI();
+      if(id==='cover') { populateCoverSel(); renderCover(); }
+      if(id==='vote') { populateVoteSel(); renderVoteChart(); }
+      if(id==='diary') renderDiary();
+      if(id==='confess') renderConf();
     }
-    $$("#tabs button").forEach(b=>b.addEventListener("click", ()=>goTab(b.dataset.tab)));
-
-    // ---------------------------
-    // Config Loader
-    // ---------------------------
-    async function loadConfig() {
-      try {
-        const res = await fetch("./config/app-config.json", {cache:"no-store"});
-        if(res.ok) Object.assign(state.cfg, await res.json());
-      } catch(e) {}
-      // Local overrides
-      const localCfg = JSON.parse(localStorage.getItem("localCfg")||"{}");
-      Object.assign(state.cfg, localCfg);
-      // UI reflect
-      $("#cfgClientId").value = state.cfg.googleClientId || "";
-      $("#cfgAdminEmails").value = (state.cfg.adminEmails||[]).join(",");
-      $("#cfgProxy").value = state.cfg.xProxyBase || "";
-      // Admin settings tab
-      const isAdmin = state.cfg.adminEmails?.includes((state.me.email||"").toLowerCase());
-      $("#settingsTab").classList.toggle("hide", !isAdmin);
-      $("#adminToggle").classList.toggle("hide", !isAdmin);
-    }
-
-    function saveClientId(){
-      const v = $("#cfgClientId").value.trim();
-      const lc = JSON.parse(localStorage.getItem("localCfg")||"{}");
-      lc.googleClientId = v;
-      localStorage.setItem("localCfg", JSON.stringify(lc));
-      toast("Client ID 저장(로컬)");
-    }
-    function saveAdminEmails(){
-      const arr = $("#cfgAdminEmails").value.split(",").map(s=>s.trim().toLowerCase()).filter(Boolean);
-      const lc = JSON.parse(localStorage.getItem("localCfg")||"{}");
-      lc.adminEmails = arr;
-      localStorage.setItem("localCfg", JSON.stringify(lc));
-      toast("관리자 리스트 저장(로컬)");
-      loadConfig();
-    }
-    function saveProxyFromSettings(){
-      const v = $("#cfgProxy").value.trim();
-      const lc = JSON.parse(localStorage.getItem("localCfg")||"{}");
-      lc.xProxyBase = v;
-      localStorage.setItem("localCfg", JSON.stringify(lc));
-      toast("프록시 저장");
-      loadGallery();
-    }
-
-    // ---------------------------
-    // Google Sign-In (GIS)
-    // ---------------------------
-    function parseJwt (token) {
-      try { const base = token.split('.')[1].replace(/-/g,'+').replace(/_/g,'/'); return JSON.parse(decodeURIComponent(escape(window.atob(base)))); } catch(e){ return {}; }
-    }
-    function setupGoogle() {
-      const cid = state.cfg.googleClientId;
-      if(!cid) return; // wait until config loaded
-      google.accounts.id.initialize({
-        client_id: cid,
-        callback: (resp)=> {
-          const payload = parseJwt(resp.credential);
-          state.me.email = (payload.email||"").toLowerCase();
-          state.me.name = payload.name||payload.given_name||"";
-          state.me.isAdmin = (state.cfg.adminEmails||[]).map(x=>x.toLowerCase()).includes(state.me.email);
-          $("#userBadge").textContent = state.me.name ? `${state.me.name} (${state.me.email})` : state.me.email || "로그인됨";
-          $("#loginBtn").classList.add("hide");
-          $("#logoutBtn").classList.remove("hide");
-          $("#settingsTab").classList.toggle("hide", !state.me.isAdmin);
-          $("#adminToggle").classList.toggle("hide", !state.me.isAdmin);
-          $("#meEmail").textContent = state.me.email || "-";
-          $("#meIsAdmin").textContent = state.me.isAdmin ? "예" : "아니오";
-          toast("로그인 성공");
-        },
-        auto_select: false
-      });
-      google.accounts.id.renderButton($("#loginBtn"), { theme: "outline", size: "medium" });
-    }
-    $("#logoutBtn").addEventListener("click", ()=>{
-      state.me = { email:"", name:"", isAdmin:false };
-      $("#userBadge").textContent = "로그인 필요";
-      $("#loginBtn").classList.remove("hide");
-      $("#logoutBtn").classList.add("hide");
-      $("#settingsTab").classList.add("hide");
-      $("#adminToggle").classList.add("hide");
-      toast("로그아웃");
+    $$('.tabs button').forEach(btn=>btn.addEventListener('click',()=>switchTab(btn.dataset.tab)));
+    window.addEventListener('hashchange', ()=>{
+      const id = (location.hash||'#home').slice(1);
+      const valid = ['home','members','favorites','fanart','cover','diary','confess','vote'];
+      switchTab(valid.includes(id)?id:'home');
     });
 
-    // ---------------------------
-    // Members & Favorites
-    // ---------------------------
-    function renderMembers(){
-      const q = $("#memberSearch").value.toLowerCase();
-      const group = $("#groupSelect").value;
-      const favOnly = $("#favoriteOnly").checked;
-      const list = $("#memberList"); list.innerHTML="";
-      MEMBERS.filter(m => (group==="ALL" || m.group===group))
-             .filter(m => !q || m.name.toLowerCase().includes(q) || m.id.includes(q))
-             .filter(m => !favOnly || state.favorites.has(m.id))
-             .forEach(m => list.appendChild(memberCard(m)));
-    }
-    function memberCard(m){
-      const el = document.createElement("div");
-      el.className="card member-card"; el.style.gridColumn="span 6";
-      el.innerHTML = `
-        <img src="https://api.dicebear.com/8.x/shapes/svg?seed=${encodeURIComponent(m.id)}" alt="${m.name}" />
-        <div class="meta">
-          <h4>${m.name} <span class="tag">${m.group==="ST"?"STELLIVE":"ISEGYE"}</span></h4>
-          <div class="list">
-            ${m.chzzk?`<a class="tag" href="${m.chzzk}" target="_blank">CHZZK</a>`:""}
-            ${m.soop?`<a class="tag" href="${m.soop}" target="_blank">SOOP</a>`:""}
-            ${m.yt?`<a class="tag" href="${m.yt}" target="_blank">YouTube</a>`:""}
-            <button class="tag" onclick="goTag('${m.hashtag}')">#${m.hashtag}</button>
-            <button class="tag" onclick="openCover('${m.id}')">커버곡</button>
-            <button class="tag" onclick="toggleFav('${m.id}')">${state.favorites.has(m.id)?"💖 최애":"🤍 최애"}</button>
-          </div>
-        </div>`;
-      return el;
-    }
-    function toggleFav(id){
-      if(state.favorites.has(id)) state.favorites.delete(id); else state.favorites.add(id);
-      localStorage.setItem("favMembers", JSON.stringify(Array.from(state.favorites)));
-      renderMembers(); renderFavs(); toast("최애 업데이트");
-    }
-    function renderFavs(){
-      const list = $("#favList"); list.innerHTML="";
-      MEMBERS.filter(m => state.favorites.has(m.id)).forEach(m=> list.appendChild(memberCard(m)));
-      if(!list.children.length) list.innerHTML = `<div class="card">아직 최애가 없어요. 멤버에서 🤍을 눌러 추가!</div>`;
+    /* ---------- THEME ---------- */
+    $('#themeBtn').addEventListener('click', ()=>{
+      document.documentElement.classList.toggle('light');
+    });
+
+    /* ---------- CONFIG LOADER ---------- */
+    let APP = { googleClientId:'', adminEmails:[], xProxyBase:'' };
+    async function loadConfig(){
+      try{
+        const base = new URL('.', location.href).pathname.replace(/\/[^\/]*$/, '/');
+        const cfgUrl = (base.endsWith('/')?base:base+'/') + 'config/app-config.json';
+        const res = await fetch(cfgUrl, {cache:'no-cache'});
+        if(!res.ok) throw new Error('config load fail');
+        APP = await res.json();
+      }catch(e){
+        console.warn('Config load failed', e);
+      }finally{
+        setupGoogle();
+        checkAdmin();
+      }
     }
 
-    // ---------------------------
-    // Gallery
-    // ---------------------------
-    function buildTagSelect(){
-      const sel = $("#tagSelect"); sel.innerHTML="";
-      TAGS.forEach(t=> { const o=document.createElement("option"); o.value=t.tag; o.textContent=t.label; sel.appendChild(o); });
-    }
-    function goTag(tag){ goTab('gallery'); $("#tagSelect").value=tag; loadGallery(); }
-
-    function toggleAdmin(){ $("#adminPanel").classList.toggle("hide"); }
-
-    function saveProxy(){
-      const v = $("#proxyInput").value.trim();
-      if(!v) return toast("프록시 주소를 입력하세요");
-      const lc = JSON.parse(localStorage.getItem("localCfg")||"{}");
-      lc.xProxyBase = v; localStorage.setItem("localCfg", JSON.stringify(lc));
-      state.cfg.xProxyBase = v;
-      $("#cfgProxy").value = v;
-      toast("프록시 저장 완료"); loadGallery();
-    }
-    function todayKey(tag){ const d = new Date(); const ymd = d.toISOString().slice(0,10); return `pin:${tag}:${ymd}`; }
-    function pinToday(){
-      const tag = $("#tagSelect").value;
-      const img = $("#pinImgUrl").value.trim();
-      const link = $("#pinImgLink").value.trim();
-      if(!img) return toast("이미지 URL을 입력하세요");
-      localStorage.setItem(todayKey(tag), JSON.stringify({img, link}));
-      toast("오늘 고정 완료"); loadGallery();
-    }
-    function unpinToday(){
-      const tag = $("#tagSelect").value;
-      localStorage.removeItem(todayKey(tag)); toast("고정 해제"); loadGallery();
-    }
-    function addTweet(){
-      const url = $("#tweetUrl").value.trim(); if(!url) return toast("트윗 URL 입력");
-      const key = `tw:${$("#tagSelect").value}:${Date.now()}`;
-      localStorage.setItem(key, url); toast("트윗 추가"); loadGallery();
-    }
-    function addUpload(){
-      const f = $("#uploadImg").files[0]; if(!f) return toast("이미지 파일 선택");
-      const rdr = new FileReader();
-      rdr.onload = () => {
-        const key = `up:${$("#tagSelect").value}:${Date.now()}`;
-        localStorage.setItem(key, rdr.result);
-        toast("업로드 추가"); loadGallery();
-      };
-      rdr.readAsDataURL(f);
-    }
-
-    async function loadGallery(){
-      const tag = $("#tagSelect").value;
-      const grid = $("#galleryGrid"); grid.innerHTML="";
-      const fallback = $("#timelineFallback");
-      const timelineBox = $("#timelineBox"); timelineBox.innerHTML="";
-
-      // 1) admin pinned today
-      try {
-        const pinned = JSON.parse(localStorage.getItem(todayKey(tag))||"null");
-        if(pinned?.img){
-          const card = document.createElement("div"); card.className="card";
-          card.innerHTML = `<a href="${pinned.link||'#'}" target="_blank"><img class="thumb" src="${pinned.img}"/></a><div class="muted">관리자 고정</div>`;
-          grid.appendChild(card);
+    /* ---------- GOOGLE SIGN-IN (GIS) ---------- */
+    let USER = null;
+    function setupGoogle(){
+      const cid = APP.googleClientId;
+      if(!cid){ $('#signinBtn').textContent='로그인 불가(설정 필요)'; return; }
+      window.google?.accounts.id.initialize({
+        client_id: cid,
+        auto_select: false,
+        callback: (resp)=>{
+          // decode payload (without server verify; for client-only demo)
+          try{
+            const payload = JSON.parse(atob(resp.credential.split('.')[1]));
+            USER = { email: (payload.email||'').toLowerCase(), name: payload.name, picture: payload.picture };
+          }catch(e){ USER = { email:'', name:'', picture:'' }; }
+          $('#userBadge').textContent = USER?.email || '로그인됨';
+          $('#signinBtn').classList.add('hide');
+          checkAdmin();
         }
-      } catch(e){}
-
-      // 2) manual uploads & tweets (for this tag)
-      Object.keys(localStorage).filter(k => k.startsWith("up:"+tag)).sort().slice(-6).reverse().forEach(k=>{
-        const src = localStorage.getItem(k);
-        const card = document.createElement("div"); card.className="card";
-        card.innerHTML = `<img class="thumb" src="${src}" />`;
-        grid.appendChild(card);
       });
-      Object.keys(localStorage).filter(k => k.startsWith("tw:"+tag)).sort().slice(-6).reverse().forEach(k=>{
-        const url = localStorage.getItem(k);
-        const card = document.createElement("div"); card.className="card";
-        card.innerHTML = `<blockquote class="twitter-tweet"><a href="${url}"></a></blockquote>`;
-        grid.appendChild(card);
-      });
+      window.google?.accounts.id.renderButton($('#signinBtn'), { theme:'outline', size:'medium' });
+      $('#signinBtn').classList.remove('hide');
+    }
+    function checkAdmin(){
+      const isAdmin = USER && APP.adminEmails.map(e=>e.toLowerCase()).includes(USER.email||'');
+      $('#adminBtn').classList.toggle('hide', !isAdmin);
+      $('#adminToggle')?.classList.toggle('hide', !isAdmin);
+    }
+    $('#adminBtn').addEventListener('click', ()=>{
+      switchTab('fanart');
+      $('#adminPanel').classList.toggle('hide');
+    });
 
-      // 3) proxy-based random images (expectation)
-      const proxy = state.cfg.xProxyBase;
+    /* ---------- DATA ---------- */
+    const MEMBERS = [
+      // STELLIVE
+      {id:'airi',     name:'아이리 칸나', group:'STELLIVE', stream:'https://www.youtube.com/@hebich/streams', tags:['Kanart']},
+      {id:'ayatsuno', name:'아야츠노 유니', group:'STELLIVE', stream:'https://chzzk.naver.com/45e71a76e949e16a34764deb962f9d9f', tags:['yunyart']},
+      {id:'shirayuki',name:'시라유키 히나', group:'STELLIVE', stream:'https://chzzk.naver.com/b044e3a3b9259246bc92e863e7d3f3b8', tags:['_hinart','shiroart']},
+      {id:'neneko',   name:'네네코 마시로', group:'STELLIVE', stream:'https://chzzk.naver.com/4515b179f86b67b4981e16190817c580', tags:['shiroart']},
+      {id:'akane',    name:'아카네 리제', group:'STELLIVE', stream:'https://chzzk.naver.com/4325b1d5bbc321fad3042306646e2e50', tags:['Lize_art']},
+      {id:'arahashi', name:'아라하시 타비', group:'STELLIVE', stream:'https://chzzk.naver.com/a6c4ddb09cdb160478996007bff35296', tags:['Tabiart']},
+      {id:'tenko',    name:'텐코 시부키', group:'STELLIVE', stream:'https://chzzk.naver.com/64d76089fba26b180d9c9e48a32600d9', tags:['shibuki_art']},
+      {id:'aokumo',   name:'아오쿠모 린', group:'STELLIVE', stream:'https://chzzk.naver.com/516937b5f85cbf2249ce31b0ad046b0f', tags:['kumorinart']},
+      {id:'hanako',   name:'하나코 나나', group:'STELLIVE', stream:'https://chzzk.naver.com/4d812b586ff63f8a2946e64fa860bbf5', tags:['Nanart_']},
+      {id:'yuzuha',   name:'유즈하 리코', group:'STELLIVE', stream:'https://chzzk.naver.com/8fd39bb8de623317de90654718638b10', tags:['riko_art']},
+      // ISEGYE
+      {id:'jingburger',name:'징버거', group:'ISEGYE', stream:'https://ch.sooplive.co.kr/jingburger1', tags:['징버거']},
+      {id:'aine',     name:'아이네', group:'ISEGYE', stream:'https://ch.sooplive.co.kr/inehine', tags:['아이네']},
+      {id:'lilpa',    name:'릴파', group:'ISEGYE', stream:'https://ch.sooplive.co.kr/lilpa0309', tags:['릴파']},
+      {id:'viichan',  name:'비챤', group:'ISEGYE', stream:'https://ch.sooplive.co.kr/viichan6', tags:['비챤']},
+      {id:'jururu',   name:'주르르', group:'ISEGYE', stream:'https://ch.sooplive.co.kr/cotton1217', tags:['주르르']},
+      {id:'gosegu',   name:'고세구', group:'ISEGYE', stream:'https://ch.sooplive.co.kr/gosegu2', tags:['고세구']},
+    ];
+    const PLAYLISTS = [
+      // ST
+      {member:'yuzuha',   label:'리코',   list:'PL_D2YrKeYY2UvRIw_SW3lQXzBDO7aBeii'},
+      {member:'tenko',    label:'부키',   list:'PLKVNBOcsLJlVii-8YwoZTD3o4gh5CnIND'},
+      {member:'hanako',   label:'나나',   list:'PLJWmDIpvwe7Cri29xtAyQXLC1RLwOChpA'},
+      {member:'shirayuki',label:'히나',   list:'PLzdLDJsHzz2NiuwjyW6QgSck4PrwlSyOc'},
+      {member:'airi',     label:'칸나',   list:'PLOPBV2KAIYnt1NJ0QCkfCqMRc00lfcjFa'},
+      {member:'akane',    label:'리제',   list:'PL-DHk0WpiRNSM5oI19ImJ8sSV65mnGseX'},
+      {member:'ayatsuno', label:'유니',   list:'PL3HtH_xx9h_7ZGoZ9zMUQ-MPumwe21_cc'},
+      {member:'arahashi', label:'타비',   list:'PLbIDsfX2JRA0oawGN209gpd_nz9IMvUlb'},
+      {member:'neneko',   label:'마시로', list:'PLWwhuXFHGLvhgZZb5_rmQEMI1B0ysKJxG'},
+      {member:'aokumo',   label:'린',     list:'PLSDRWR15h-o4uWNeoLv0upOUUGj12f-yU'},
+      // IS
+      {member:'gosegu',   label:'고세구', list:'PLZNwpHxpI4EjDSv3v_HY7udxDEqj4C7PL'},
+      {member:'jururu',   label:'주르르', list:'PLqE7uvTHaH31Wl8lCe3SYslZvoCnTD-JS'},
+      {member:'viichan',  label:'비챤',   list:'PLhaJuLneKo5FdYnMZ1Jc5BaV7y26KvmD1'},
+      {member:'jingburger',label:'징버거',list:'PLio0a5EPF6j099Af5uBaK6V25RtTvK4kq'},
+      {member:'lilpa',    label:'릴파',   list:'PLLPGQs-RNQXnFl55WissjQylZbInOK81P'},
+      {member:'aine',     label:'아이네', list:'PLJWTWXJ7iqXctxVu1Fd3ZkF-WWD8kOzMb'},
+    ].map(p=>({ ...p, url:`https://www.youtube.com/embed/videoseries?list=${p.list}`}));
+    const TAGS = {
+      STELLIVE:['Kanart','yunyart','_hinart','shiroart','Tabiart','Lize_art','kumorinart','Nanart_','riko_art','shibuki_art'],
+      ISEGYE:['고세구','릴파','비챤','아이네','주르르','징버거']
+    };
+
+    /* ---------- STATE ---------- */
+    const KEY = {
+      fav: 'fh.favorites.v1',
+      diary: 'fh.diary.v1',
+      confess: 'fh.confess.v1',
+      vote: (ym)=>`fh.vote.${ym}`,
+      galleryPin: (tag,date)=>`fh.pin.${tag}.${date}`,
+      config: 'fh.cfg.v1'
+    };
+    let favorites = JSON.parse(localStorage.getItem(KEY.fav)||'[]');
+
+    /* ---------- MEMBERS ---------- */
+    function heart(isOn){return isOn?'💖':'🤍'}
+    function isFav(id){return favorites.includes(id)}
+    function toggleFav(id){
+      if(isFav(id)) favorites = favorites.filter(x=>x!==id);
+      else favorites.push(id);
+      localStorage.setItem(KEY.fav, JSON.stringify(favorites));
+      renderMembers(); renderFav();
+    }
+    function renderMembers(){
+      const group = $('#groupSel').value;
+      const q = ($('#search').value||'').trim().toLowerCase();
+      const onlyFav = $('#onlyFav').checked;
+      let list = MEMBERS.slice();
+      if(group!=='ALL') list = list.filter(m=>m.group===group);
+      if(q) list = list.filter(m=>m.name.toLowerCase().includes(q) || (m.tags||[]).join(',').toLowerCase().includes(q));
+      if(onlyFav) list = list.filter(m=>favorites.includes(m.id));
+      const grid = $('#memberGrid'); grid.innerHTML='';
+      list.forEach(m=>{
+        const el = document.createElement('div'); el.className='card';
+        el.innerHTML = `
+          <div class="row">
+            <strong>${m.name}</strong>
+            <span class="pill">${m.group==='STELLIVE'?'ST':'IS'}</span>
+          </div>
+          <div class="muted" style="margin:6px 0">#${(m.tags||[]).join(' #')}</div>
+          <div class="row">
+            <a class="btn primary" href="${m.stream}" target="_blank" rel="noopener">채널 방문</a>
+            <button class="btn" onclick="openCover('${m.id}')">커버곡</button>
+            <button class="btn" onclick="toggleFav('${m.id}')">${heart(isFav(m.id))}</button>
+          </div>`;
+        grid.appendChild(el);
+      });
+    }
+    $('#groupSel')?.addEventListener('change', renderMembers);
+    $('#search')?.addEventListener('input', renderMembers);
+    $('#onlyFav')?.addEventListener('change', renderMembers);
+
+    /* ---------- FAVORITES ---------- */
+    function renderFav(){
+      const wrap = $('#favWrap'); wrap.innerHTML='';
+      const list = MEMBERS.filter(m=>favorites.includes(m.id));
+      if(!list.length){ wrap.innerHTML = '<p class="muted">아직 최애가 없습니다. 멤버 카드에서 💖을 눌러 추가하세요.</p>'; return; }
+      list.forEach(m=>{
+        const el = document.createElement('div'); el.className='card';
+        el.innerHTML = `
+          <div class="row">
+            <strong>${m.name}</strong>
+            <span class="pill">${m.group==='STELLIVE'?'ST':'IS'}</span>
+          </div>
+          <div class="muted" style="margin:6px 0">#${(m.tags||[]).join(' #')}</div>
+          <div class="row">
+            <a class="btn primary" href="${m.stream}" target="_blank" rel="noopener">채널 방문</a>
+            <button class="btn" onclick="openCover('${m.id}')">커버곡</button>
+            <button class="btn" onclick="toggleFav('${m.id}')">${heart(isFav(m.id))}</button>
+          </div>`;
+        wrap.appendChild(el);
+      });
+    }
+
+    /* ---------- COVER ---------- */
+    function populateCoverSel(){
+      const sel = $('#coverSel'); sel.innerHTML='';
+      MEMBERS.forEach(m=>{
+        const has = PLAYLISTS.find(p=>p.member===m.id);
+        if(!has) return;
+        const op = document.createElement('option');
+        op.value = m.id; op.textContent = `${m.group==='STELLIVE'?'[ST]':'[IS]'} ${m.name}`;
+        sel.appendChild(op);
+      });
+      if(sel.options.length && !sel.value) sel.value = sel.options[0].value;
+    }
+    function renderCover(){
+      const id = $('#coverSel').value;
+      const pl = PLAYLISTS.find(p=>p.member===id);
+      const wrap = $('#coverWrap'); wrap.innerHTML='';
+      if(!pl){ wrap.innerHTML='<p class="muted">재생목록이 없습니다.</p>'; return; }
+      const ifr = document.createElement('iframe');
+      ifr.width='100%'; ifr.style.aspectRatio='16/9'; ifr.loading='lazy';
+      ifr.src = pl.url; ifr.allowFullscreen = true; ifr.frameBorder = '0';
+      wrap.appendChild(ifr);
+      const cap = document.createElement('div'); cap.className='muted'; cap.style.marginTop='6px';
+      cap.textContent = pl.label + ' 커버 재생목록';
+      wrap.appendChild(cap);
+    }
+    $('#coverSel')?.addEventListener('change', renderCover);
+    function openCover(id){ switchTab('cover'); $('#coverSel').value=id; renderCover(); }
+
+    /* ---------- FANART ---------- */
+    function renderFanartUI(){
+      const gm = $('#fanMember');
+      const group = $('#fanGroup').value;
+      gm.innerHTML='';
+      MEMBERS.filter(m=>m.group===(group)).forEach(m=>{
+        const op=document.createElement('option'); op.value=m.id; op.textContent=m.name; gm.appendChild(op);
+      });
+      loadFanart();
+    }
+    $('#fanGroup').addEventListener('change', renderFanartUI);
+    $('#fanMember').addEventListener('change', loadFanart);
+    $('#reloadFan').addEventListener('click', loadFanart);
+
+    function tagFor(memberId){
+      const m = MEMBERS.find(x=>x.id===memberId);
+      if(!m) return 'art';
+      return (m.tags?.[0]) || 'art';
+    }
+    function today(){ const d=new Date(); return d.toISOString().slice(0,10); }
+
+    async function loadFanart(){
+      const memberId = $('#fanMember').value;
+      const tag = tagFor(memberId);
+      const gallery = $('#fanGallery'); gallery.innerHTML='';
+      const proxy = (localStorage.getItem(KEY.config)? JSON.parse(localStorage.getItem(KEY.config)).xProxyBase : APP.xProxyBase) || '';
+
+      // 고정 이미지(오늘)
+      const pkey = KEY.galleryPin(tag, today());
+      const pin = JSON.parse(localStorage.getItem(pkey)||'null');
+      if(pin){
+        const fig=document.createElement('figure');
+        fig.innerHTML = `<img src="${pin.img}" alt="pinned"><figcaption class="muted">${tag} • 관리자 고정 <a href="${pin.src||'#'}" target="_blank">원본</a></figcaption>`;
+        gallery.appendChild(fig);
+      }
+
       if(proxy){
-        try {
-          const res = await fetch(`${proxy.replace(/\/$/,'')}/tag/${encodeURIComponent(tag)}?limit=12`, {mode:"cors"});
-          if(res.ok){
-            const data = await res.json(); // expect [{img, link}]
-            const dailySeed = (new Date().toISOString().slice(0,10)+tag).split("").reduce((a,c)=>a+c.charCodeAt(0),0);
-            const picks = [];
-            for(let i=0;i<data.length;i++){ // Fisher–Yates with seed-ish
-              const j = (i + dailySeed) % data.length;
-              picks.push(data[j]);
-            }
-            picks.slice(0,3).forEach(it=>{
-              const card = document.createElement("div"); card.className="card";
-              card.innerHTML = `<a href="${it.link||'#'}" target="_blank"><img class="thumb" src="${it.img}"/></a>`;
-              grid.appendChild(card);
-            });
-          }
-        } catch(e){ console.warn(e); }
-      }
-
-      // 4) fallback timeline (if proxy missing and content still thin)
-      if(!proxy && grid.children.length < 3){
-        fallback.classList.remove("hide");
-        const timelineUrl = `https://x.com/hashtag/${encodeURIComponent(tag)}`;
-        timelineBox.innerHTML = `<a class="tag" target="_blank" href="${timelineUrl}">#${tag} 타임라인 열기</a>`;
-        // X 위젯 스크립트
-        const s = document.createElement("script"); s.setAttribute("async",""); s.src="https://platform.twitter.com/widgets.js"; document.body.appendChild(s);
-      } else {
-        fallback.classList.add("hide");
+        // 프록시가 있다면 프록시에서 최신 이미지 10장 중 3장
+        try{
+          const res = await fetch(`${proxy}/hashtag/${encodeURIComponent(tag)}?limit=10`);
+          const data = await res.json(); // [{img,src},...]
+          const picks = data.slice(0,10).sort(()=>Math.random()-0.5).slice(0,3);
+          picks.forEach(it=>{
+            const fig=document.createElement('figure');
+            fig.innerHTML = `<a href="${it.src}" target="_blank"><img src="${it.img}" alt="${tag}"></a>`;
+            gallery.appendChild(fig);
+          });
+        }catch(e){
+          gallery.innerHTML += `<p class="muted">프록시 요청 실패. 해시태그 타임라인로 이동하세요.</p>`;
+          gallery.appendChild(tagLink(tag));
+        }
+      }else{
+        // 프록시 없으면 링크만
+        gallery.appendChild(tagLink(tag));
       }
     }
+    function tagLink(tag){
+      const wrap=document.createElement('div');
+      wrap.innerHTML = `<a class="btn" href="https://x.com/hashtag/${encodeURIComponent(tag)}" target="_blank">#${tag} 타임라인 열기</a>`;
+      return wrap;
+    }
+    // 관리자 패널 동작
+    $('#adminToggle').addEventListener('click', ()=>$('#adminPanel').classList.toggle('hide'));
+    $('#saveProxy').addEventListener('click', ()=>{
+      const v = $('#xProxy').value.trim();
+      const cfg = JSON.parse(localStorage.getItem(KEY.config)||'{}'); cfg.xProxyBase = v;
+      localStorage.setItem(KEY.config, JSON.stringify(cfg));
+      alert('저장됨. 갤러리를 새로고침하세요.');
+    });
+    $('#savePin').addEventListener('click', ()=>{
+      const memberId = $('#fanMember').value;
+      const tag = tagFor(memberId);
+      const img = $('#pinImage').value.trim();
+      const src = $('#pinLink').value.trim();
+      localStorage.setItem(KEY.galleryPin(tag, today()), JSON.stringify({img,src}));
+      loadFanart();
+    });
+    $('#clearPin').addEventListener('click', ()=>{
+      const memberId = $('#fanMember').value; const tag = tagFor(memberId);
+      localStorage.removeItem(KEY.galleryPin(tag, today()));
+      loadFanart();
+    });
+    $('#useUpload').addEventListener('click', ()=>{
+      const file = $('#uploadImg').files?.[0]; if(!file) return alert('이미지 선택');
+      const reader = new FileReader();
+      reader.onload = ()=>{
+        const gallery=$('#fanGallery'); const fig=document.createElement('figure');
+        fig.innerHTML = `<img src="${reader.result}" alt="upload"><figcaption class="muted">수동 업로드(로컬 저장)</figcaption>`;
+        gallery.prepend(fig);
+      };
+      reader.readAsDataURL(file);
+    });
+    $('#addTweet').addEventListener('click', ()=>{
+      const url = $('#tweetUrl').value.trim(); if(!url) return;
+      const div = document.createElement('div');
+      div.innerHTML = `<blockquote class="twitter-tweet"><a href="${url}"></a></blockquote>`;
+      $('#fanGallery').prepend(div);
+      // Load widget script one-time
+      if(!window.__twLoaded){
+        const s=document.createElement('script'); s.src='https://platform.twitter.com/widgets.js'; s.async=true;
+        document.body.appendChild(s); window.__twLoaded=true;
+      }else if(window.twttr?.widgets){ window.twttr.widgets.load(); }
+    });
 
-    // ---------------------------
-    // Covers
-    // ---------------------------
-    function buildCoverSelect(){
-      const sel = $("#coverSelect"); sel.innerHTML="";
-      MEMBERS.forEach(m => {
-        const o = document.createElement("option");
-        o.value = m.id; o.textContent = `${m.group==="ST"?"[ST]":"[IS]"} ${m.name}`;
-        sel.appendChild(o);
+    /* ---------- DIARY / CONFESS ---------- */
+    function renderList(key, elId){
+      const items = JSON.parse(localStorage.getItem(key)||'[]');
+      const ul=$(elId); ul.innerHTML='';
+      items.forEach((t,idx)=>{
+        const li=document.createElement('li');
+        li.innerHTML = `<span>${t.text}</span><button class="btn" data-idx="${idx}">삭제</button>`;
+        ul.appendChild(li);
+      });
+      ul.querySelectorAll('button').forEach(btn=>btn.addEventListener('click',e=>{
+        const idx=+e.currentTarget.dataset.idx;
+        const arr=JSON.parse(localStorage.getItem(key)||'[]'); arr.splice(idx,1);
+        localStorage.setItem(key, JSON.stringify(arr));
+        renderList(key, elId);
+      }));
+    }
+    $('#addDiary').addEventListener('click', ()=>{
+      const v=$('#diaryText').value.trim(); if(!v) return;
+      const arr=JSON.parse(localStorage.getItem(KEY.diary)||'[]'); arr.unshift({text:v,ts:Date.now()});
+      localStorage.setItem(KEY.diary, JSON.stringify(arr)); $('#diaryText').value=''; renderDiary();
+    });
+    function renderDiary(){ renderList(KEY.diary, '#diaryList'); }
+    $('#addConf').addEventListener('click', ()=>{
+      const v=$('#confText').value.trim(); if(!v) return;
+      const arr=JSON.parse(localStorage.getItem(KEY.confess)||'[]'); arr.unshift({text:v,ts:Date.now()});
+      localStorage.setItem(KEY.confess, JSON.stringify(arr)); $('#confText').value=''; renderConf();
+    });
+    function renderConf(){ renderList(KEY.confess, '#confList'); }
+
+    /* ---------- VOTE ---------- */
+    function ym(){ const d=new Date(); return d.toISOString().slice(0,7); } // YYYY-MM
+    function populateVoteSel(){
+      const scope=$('#voteScope').value;
+      const sel=$('#voteSel'); sel.innerHTML='';
+      let list = MEMBERS.slice();
+      if(scope!=='ALL') list = list.filter(m=>m.group===scope);
+      list.forEach(m=>{
+        const op=document.createElement('option'); op.value=m.id; op.textContent=`${m.group==='STELLIVE'?'[ST]':'[IS]'} ${m.name}`;
+        sel.appendChild(op);
       });
     }
-    function openCover(id){ goTab('covers'); $("#coverSelect").value=id; loadCover(); }
-    function loadCover(){
-      const id = $("#coverSelect").value;
-      const m = MEMBERS.find(x=>x.id===id); if(!m) return;
-      const url = `https://www.youtube.com/embed/videoseries?list=${encodeURIComponent(m.cover)}`;
-      $("#ytEmbed").src = url;
-    }
-
-    // ---------------------------
-    // Diary / Confessions
-    // ---------------------------
-    function renderList(box, arr, keyPrefix){
-      box.innerHTML="";
-      arr.forEach((t, idx)=>{
-        const item = document.createElement("div"); item.className="item";
-        item.innerHTML = `<div class="row"><div style="flex:1;">${t}</div><button class="btn ghost slim" onclick="delItem('${keyPrefix}', ${idx})">삭제</button></div>`;
-        box.appendChild(item);
-      });
-    }
-    function delItem(type, idx){
-      if(type==="diary"){ state.diary.splice(idx,1); localStorage.setItem("diary", JSON.stringify(state.diary)); renderList($("#diaryList"), state.diary, "diary");}
-      if(type==="conf"){ state.conf.splice(idx,1); localStorage.setItem("conf", JSON.stringify(state.conf)); renderList($("#confList"), state.conf, "conf");}
-    }
-    function addDiary(){
-      const v = $("#diaryInput").value.trim(); if(!v) return;
-      state.diary.unshift(v); $("#diaryInput").value=""; localStorage.setItem("diary", JSON.stringify(state.diary)); renderList($("#diaryList"), state.diary, "diary");
-    }
-    function addConf(){
-      const v = $("#confInput").value.trim(); if(!v) return;
-      state.conf.unshift(v); $("#confInput").value=""; localStorage.setItem("conf", JSON.stringify(state.conf)); renderList($("#confList"), state.conf, "conf");
-    }
-
-    // ---------------------------
-    // Voting
-    // ---------------------------
-    function monthKey(){ const d=new Date(); return d.toISOString().slice(0,7); } // YYYY-MM
-    function buildVoteSelect(){
-      const scope = $("#voteScope").value;
-      const sel = $("#voteMember"); sel.innerHTML="";
-      MEMBERS.filter(m => scope==="ALL" || m.group===scope).forEach(m=>{
-        const o=document.createElement("option"); o.value=m.id; o.textContent=m.name; sel.appendChild(o);
-      });
-      state.scope = scope;
-      drawChart();
-    }
-    $("#voteScope").addEventListener("change", buildVoteSelect);
-
-    function doVote(){
-      const key = `vote:${monthKey()}:${state.scope}`;
-      const voted = localStorage.getItem(key);
-      if(voted){ toast("이번 달 이미 투표했습니다"); return; }
-      const id = $("#voteMember").value;
-      // tally
-      const all = JSON.parse(localStorage.getItem("voteTallies")||"{}");
-      all[key] = all[key] || {};
-      all[key][id] = (all[key][id]||0) + 1;
-      localStorage.setItem("voteTallies", JSON.stringify(all));
-      localStorage.setItem(key, id); // mark my vote
-      toast("투표 완료");
-      drawChart();
-    }
-    function showMyVote(){
-      const key = `vote:${monthKey()}:${state.scope}`;
-      const v = localStorage.getItem(key);
-      toast(v ? `이번 달 내 투표: ${MEMBERS.find(m=>m.id===v)?.name||v}` : "아직 투표하지 않았습니다");
-    }
-    function drawChart(){
-      const ctx = $("#voteChart").getContext("2d");
-      const key = `vote:${monthKey()}:${state.scope}`;
-      const all = JSON.parse(localStorage.getItem("voteTallies")||"{}");
-      const data = all[key] || {};
-      const items = MEMBERS.filter(m => state.scope==="ALL" || m.group===state.scope);
-      const labels = items.map(m=>m.name);
-      const values = items.map(m=> data[m.id] || 0);
-      if(state.chart){ state.chart.destroy(); }
-      state.chart = new Chart(ctx, {
-        type: "bar",
-        data: { labels, datasets: [{ label: `득표 (${monthKey()} / ${state.scope})`, data: values }]},
-        options: { responsive:true, scales:{ y:{ beginAtZero:true } } }
+    $('#voteScope').addEventListener('change', ()=>{ populateVoteSel(); renderVoteChart(); });
+    $('#doVote').addEventListener('click', ()=>{
+      const id=$('#voteSel').value; const key=KEY.vote(ym());
+      const state=JSON.parse(localStorage.getItem(key)||'{"voted":false,"counts":{}}');
+      if(state.voted){ alert('이번 달은 이미 투표했습니다.'); return; }
+      state.voted=true; state.counts[id]=(state.counts[id]||0)+1;
+      localStorage.setItem(key, JSON.stringify(state));
+      renderVoteChart();
+      alert('투표 완료!');
+    });
+    $('#myVote').addEventListener('click', ()=>{
+      const state=JSON.parse(localStorage.getItem(KEY.vote(ym()))||'{"voted":false}');
+      alert(state.voted?'이번 달 투표 완료 상태입니다.':'아직 투표하지 않았습니다.');
+    });
+    let voteChart=null;
+    function renderVoteChart(){
+      const key=KEY.vote(ym()); const state=JSON.parse(localStorage.getItem(key)||'{"counts":{}}');
+      const counts=state.counts||{};
+      const labels=MEMBERS.map(m=>m.name);
+      const data=MEMBERS.map(m=>counts[m.id]||0);
+      const ctx=$('#voteChart').getContext('2d');
+      if(voteChart) voteChart.destroy();
+      voteChart = new Chart(ctx, {
+        type:'bar',
+        data:{ labels, datasets:[{ label:'득표수', data }] },
+        options:{ scales:{ y:{ beginAtZero:true } } }
       });
     }
 
-    // ---------------------------
-    // Live banner (simple link presence)
-    // ---------------------------
-    function updateLiveBadge(){
-      // 단순 데모: 방송 링크 존재시 '확인' 버튼. 실제 API 연동은 서버/공식 API 필요.
-      const liveCount = MEMBERS.filter(m => m.chzzk || m.soop).length; // placeholder
-      const b = $("#liveBadge");
-      b.classList.remove("hide");
-      b.textContent = `📡 채널 ${liveCount}개 연결`;
+    /* ---------- INIT ---------- */
+    function boot(){
+      loadConfig();
+      switchTab((location.hash||'#home').slice(1) || 'home');
     }
-
-    // ---------------------------
-    // Init
-    // ---------------------------
-    function fillSettings(){
-      $("#meEmail").textContent = state.me.email || "-";
-      $("#meIsAdmin").textContent = state.me.isAdmin ? "예":"아니오";
-      $("#cfgClientId").value = state.cfg.googleClientId || "";
-      $("#cfgAdminEmails").value = (state.cfg.adminEmails||[]).join(",");
-      $("#cfgProxy").value = state.cfg.xProxyBase || "";
-    }
-
-    $("#groupSelect").addEventListener("change", renderMembers);
-    $("#memberSearch").addEventListener("input", renderMembers);
-    $("#favoriteOnly").addEventListener("change", renderMembers);
-
-    (async function bootstrap(){
-      await loadConfig();
-      setupGoogle();
-      renderMembers();
-      renderFavs();
-      buildTagSelect();
-      buildCoverSelect();
-      buildVoteSelect();
-      renderList($("#diaryList"), state.diary, "diary");
-      renderList($("#confList"), state.conf, "conf");
-      updateLiveBadge();
-    })();
+    boot();
   </script>
 </body>
 </html>

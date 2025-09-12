@@ -1,7 +1,7 @@
 
 # Fan Hub (Bundle v7.2) — COMPLETE
 
-- BACKEND_BASE = https://stelive-shibuki321.io0907op.workers.dev
+- BACKEND_BASE = [https://stelive-shibuki321.io0907op.workers.dev](https://shibuki.io0907op.workers.dev/)
 - GOOGLE_AUDIENCE = 396083519795-r5j9hfm32ldtb2gumg2de0njk3ak7j0t.apps.googleusercontent.com
 
 ## 배포

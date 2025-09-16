@@ -1,40 +1,47 @@
 <!doctype html>
 <html lang="ko">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Fan Hub Login Test</title>
-  <link rel="stylesheet" href="./styles.css" />
-  <script src="https://accounts.google.com/gsi/client" async defer></script>
-  <script>
-    window.FANHUB_CONFIG = {
-      BACKEND_BASE: "https://stelive-shibuki321.io0907op.workers.dev",
-      GOOGLE_CLIENT_ID: "396083519795-r5j9hfm32ldtb2gumg2de0njk3ak7j0t.apps.googleusercontent.com"
-    };
-  </script>
-</head>
+<head>%%HEAD%%</head>
 <body>
-  <main class="container">
-    <h1>🔐 Google 로그인 테스트</h1>
-    <p>GitHub Pages ↔ Cloudflare Worker CORS/세션 동작 확인용 최소 페이지</p>
+%%NAV%%
 
-    <div id="googleBtn"></div>
-    <div id="loginResult" class="ok"></div>
+<main class="container">
+  <section class="hero">
+    <h1>스텔라이브 × 이세계아이돌 팬 허브</h1>
+    <p>구글 로그인 → 최애 설정 → 팬아트/커버곡/투표까지 한 번에!</p>
+    <div id="g_id_onload"
+      data-client_id="396083519795-r5j9hfm32ldtb2gumg2de0njk3ak7j0t.apps.googleusercontent.com"
+      data-context="signin"
+      data-ux_mode="popup"
+      data-callback="onGoogleCredential"
+      data-auto_select="false"></div>
+    <div class="g_id_signin" data-type="standard" data-size="large"></div>
+  </section>
 
-    <div class="row">
-      <button id="checkSession">세션 확인</button>
-      <button id="logoutBtn">로그아웃</button>
+  <section id="live-banner" class="banner" hidden>
+    <span>📡 방송 중! </span><span id="live-names"></span>
+  </section>
+
+  <section class="grid two">
+    <div class="card">
+      <h3>빠른 시작</h3>
+      <ol>
+        <li>우측 상단에서 로그인</li>
+        <li>멤버 페이지에서 <b>최애</b> 추가</li>
+        <li>투표로 마음 표현하기</li>
+      </ol>
     </div>
+    <div class="card">
+      <h3>오늘의 팬아트</h3>
+      <div id="home-gallery" class="gallery"></div>
+    </div>
+  </section>
 
-    <hr />
-    <h2>익명 고백함</h2>
-    <form id="confForm">
-      <input type="text" name="message" placeholder="메시지" required />
-      <button type="submit">등록</button>
-    </form>
-    <ul id="confList"></ul>
-  </main>
+  <section class="diag">
+    <h4>진단</h4>
+    <pre id="diag"></pre>
+  </section>
+</main>
 
-  <script src="./app.js"></script>
+<script src="./app.js"></script>
 </body>
 </html>
